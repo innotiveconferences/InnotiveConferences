@@ -1,0 +1,120 @@
+/* Keyframes & Scroll Reveal System */
+
+/* Floating Animations */
+@keyframes float {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+    50% {
+        transform: translateY(-20px) rotate(5deg) scale(1.05);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg) scale(1);
+    }
+}
+
+/* Base states for Scroll-Reveal - visible by default for progressive enhancement / CORS fallback */
+.reveal-up, .reveal-left, .reveal-right, .reveal-scale {
+    opacity: 1;
+    transform: none;
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+/* Hidden states - only applied if JS is successfully loaded and running */
+.js-enabled .reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.js-enabled .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+}
+
+.js-enabled .reveal-right {
+    opacity: 0;
+    transform: translateX(40px);
+}
+
+.js-enabled .reveal-scale {
+    opacity: 0;
+    transform: scale(0.92);
+}
+
+/* Active states added by Intersection Observer */
+.reveal-active,
+.js-enabled .reveal-up.reveal-active,
+.js-enabled .reveal-left.reveal-active,
+.js-enabled .reveal-right.reveal-active,
+.js-enabled .reveal-scale.reveal-active {
+    opacity: 1;
+    transform: translate(0) scale(1);
+}
+
+/* Delay modifiers for sequential item reveals */
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+.delay-500 { transition-delay: 0.5s; }
+.delay-600 { transition-delay: 0.6s; }
+
+/* Micro Interaction: Button Hover Grow Outline */
+.btn-grow-outline {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-grow-outline::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    border: 2px solid var(--accent);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transform: scale(1.1);
+    transition: transform var(--transition-normal), opacity var(--transition-normal);
+}
+
+.btn-grow-outline:hover::before {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Parallax Shape Wrapper */
+.parallax-shape {
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Card hover glow and lifts */
+.hover-lift {
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Pulse animation for map or markers */
+.pulse-glow {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+    animation: pulse-glow-anim 2s infinite;
+}
+
+@keyframes pulse-glow-anim {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(37, 99, 235, 0);
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
+    }
+}

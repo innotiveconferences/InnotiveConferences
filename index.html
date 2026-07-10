@@ -1,0 +1,1836 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Innotive Conferences | World-Class International Conferences & Summits
+    </title>
+    <meta
+      name="description"
+      content="Connecting global leaders, researchers, and industry pioneers through premium international summits in AI, Healthcare, Finance, Climate, and Technology."
+    />
+    <meta
+      name="keywords"
+      content="global summits, international conferences, tech conferences, artificial intelligence summit, finance forum, climate leadership"
+    />
+    <meta name="author" content="Innotive Conferences LLC" />
+
+    <!-- Open Graph Meta Tags -->
+    <meta
+      property="og:title"
+      content="Innotive Conferences | Connecting Leaders, Inspiring Innovation"
+    />
+    <meta
+      property="og:description"
+      content="Join world-class summits across AI, Healthcare, Finance, and Climate Change. Connect with international speakers."
+    />
+    <meta property="og:image" content="assets/images/hero_ai.png" />
+    <meta property="og:type" content="website" />
+
+    <!-- CSS stylesheets -->
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+
+    <!-- Lucide Icons Library -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Defer loading Javascript files -->
+    <script src="js/app.js" type="module" defer></script>
+    <script src="js/animations.js" type="module" defer></script>
+    <script src="js/carousel.js" type="module" defer></script>
+    <script src="js/contact.js" type="module" defer></script>
+  </head>
+  <body>
+    <!-- 1. Sticky Header -->
+    <header class="site-header" id="header">
+      <div class="container header-container">
+        <a href="#" class="logo" id="logoLink">
+          <div class="logo-icon"><i data-lucide="globe"></i></div>
+          <span>Innotive Conferences</span>
+        </a>
+
+        <nav
+          class="site-navigation"
+          id="navigation"
+          aria-label="Main Navigation"
+        >
+          <ul class="nav-menu" id="navMenu">
+            <li><a href="#home" class="nav-link">Home</a></li>
+            <li><a href="#about" class="nav-link">About</a></li>
+            <!-- <li><a href="#speakers" class="nav-link">Speakers</a></li> -->
+            <li><a href="#conferences" class="nav-link">Conferences</a></li>
+            <!-- <li><a href="#testimonials" class="nav-link">Testimonials</a></li> -->
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="#contact" class="btn btn-primary" id="headerCtaBtn"
+            >Register Now</a
+          >
+          <button
+            class="menu-toggle"
+            id="menuToggle"
+            aria-expanded="false"
+            aria-controls="navigation"
+            aria-label="Toggle navigation menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- 2. Hero Landing Section -->
+      <section class="hero-section" id="home">
+        <!-- Background Image Carousel -->
+        <div class="hero-carousel" id="heroCarousel">
+          <div
+            class="hero-slide active"
+            style="background-image: url(&quot;assets/images/hero_ai.png&quot;)"
+          ></div>
+          <div
+            class="hero-slide"
+            style="
+              background-image: url(&quot;assets/images/hero_health.png&quot;);
+            "
+          ></div>
+          <div
+            class="hero-slide"
+            style="
+              background-image: url(&quot;assets/images/hero_finance.png&quot;);
+            "
+          ></div>
+        </div>
+
+        <!-- Dark Gradient Overlay -->
+        <div class="overlay-dark"></div>
+
+        <!-- Floating Blur Shapes -->
+        <div class="floating-shape shape-1 parallax-shape"></div>
+        <div class="floating-shape shape-2 parallax-shape"></div>
+
+        <div class="container">
+          <div class="hero-content-wrapper reveal-up">
+            <span class="badge badge-glass-white hero-badge"
+              ><i data-lucide="award"></i> Global Conferences & Summits</span
+            >
+            <h1 class="hero-heading">
+              Connecting Global Leaders Through World-Class Conferences
+            </h1>
+            <p class="hero-desc">
+              We bring together visionary founders, academic pioneers, and
+              industry directors to address humanity's greatest challenges and
+              spark collaborative breakthroughs.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#contact" class="btn btn-primary btn-grow-outline"
+                ><i data-lucide="calendar"></i> Register Now</a
+              >
+              <a
+                href="#conferences"
+                class="btn btn-secondary"
+                style="
+                  color: var(--text-light);
+                  border-color: rgba(255, 255, 255, 0.4);
+                "
+                ><i data-lucide="compass"></i> Explore Conferences</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Animated Statistics -->
+        <div class="hero-stats-wrapper">
+          <div class="container">
+            <div class="stats-grid">
+              <div class="stat-item reveal-up delay-100">
+                <div class="stat-number" data-target="100">0+</div>
+                <div class="stat-label">Global Events</div>
+              </div>
+              <div class="stat-item reveal-up delay-200">
+                <div class="stat-number" data-target="50">0+</div>
+                <div class="stat-label">Countries</div>
+              </div>
+              <div class="stat-item reveal-up delay-300">
+                <div class="stat-number" data-target="10000">0+</div>
+                <div class="stat-label">Attendees</div>
+              </div>
+              <div class="stat-item reveal-up delay-400">
+                <div class="stat-number" data-target="500">0+</div>
+                <div class="stat-label">Speakers</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. About Section -->
+      <section id="about" class="about-section">
+        <div class="container">
+          <div class="grid-2">
+            <!-- Left: Overlapping Image Collage -->
+            <div class="about-collage reveal-left">
+              <img
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=500"
+                alt="Keynote Conference Hall"
+                class="collage-img collage-img-1"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=400"
+                alt="Networking Event"
+                class="collage-img collage-img-2"
+              />
+              <img
+                src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=300"
+                alt="Workshop Panel"
+                class="collage-img collage-img-3"
+              />
+            </div>
+
+            <!-- Right: Who We Are Content -->
+            <div class="about-content reveal-right">
+              <span class="badge badge-glass-primary">About Us</span>
+              <h2 style="margin-top: 16px; margin-bottom: 24px">Who We Are</h2>
+              <p style="margin-bottom: 24px; font-size: 1.05rem">
+                Innotive Conferences is the premier global platform dedicated to
+                organizing cutting-edge summits that serve as catalogs of
+                innovation. For over a decade, we have designed immersive
+                learning environments that spark knowledge transfer and build
+                strategic alliances.
+              </p>
+              <p>
+                We pride ourselves on our meticulous academic selection, highly
+                engaging breakout interactive tracks, and creating comfortable
+                networking areas where delegates meet their next business
+                partners or research peers.
+              </p>
+
+              <div class="about-features">
+                <div class="feature-check-card reveal-up delay-100">
+                  <div class="feature-check-icon">
+                    <i data-lucide="users"></i>
+                  </div>
+                  <div>
+                    <h4>Global Networking</h4>
+                  </div>
+                </div>
+                <div class="feature-check-card reveal-up delay-200">
+                  <div class="feature-check-icon">
+                    <i data-lucide="award"></i>
+                  </div>
+                  <div>
+                    <h4>Industry Experts</h4>
+                  </div>
+                </div>
+                <div class="feature-check-card reveal-up delay-300">
+                  <div class="feature-check-icon">
+                    <i data-lucide="file-text"></i>
+                  </div>
+                  <div>
+                    <h4>Research papers</h4>
+                  </div>
+                </div>
+                <div class="feature-check-card reveal-up delay-400">
+                  <div class="feature-check-icon">
+                    <i data-lucide="globe"></i>
+                  </div>
+                  <div>
+                    <h4>International Speakers</h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Featured Speakers Section -->
+      <!-- <section id="speakers" class="section-dark">
+        <div class="container">
+          <div class="section-header reveal-up">
+            <span class="badge badge-glass-accent">Visionaries</span>
+            <h2>Featured Speakers</h2>
+            <p>
+              Meet the thought leaders, chief research scientists, and founding
+              partners leading our global panels.
+            </p>
+          </div>
+
+          <div class="grid-4" id="speakersGrid">
+
+            <article class="speaker-card reveal-up delay-100">
+              <div class="speaker-img-wrapper">
+                <img
+                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600"
+                  alt="Sarah Jenkins"
+                  class="speaker-img"
+                />
+                <div class="speaker-card-overlay"></div>
+                <div class="speaker-info">
+                  <div class="speaker-designation">Chief AI Scientist</div>
+                  <h3 class="speaker-name">Sarah Jenkins</h3>
+                  <div class="speaker-company">NeuralCorp Solutions</div>
+                  <div class="speaker-country">
+                    <i data-lucide="map-pin"></i> San Francisco, USA
+                  </div>
+
+                  <p class="speaker-bio">
+                    Pioneer in deep neural architecture search and generative
+                    models, with 15+ years researching at MIT Labs.
+                  </p>
+
+                  <div class="speaker-socials">
+                    <a href="#" aria-label="Sarah Jenkins Twitter"
+                      ><i data-lucide="twitter"></i
+                    ></a>
+                    <a href="#" aria-label="Sarah Jenkins LinkedIn"
+                      ><i data-lucide="linkedin"></i
+                    ></a>
+                    <a href="#" aria-label="Sarah Jenkins GitHub"
+                      ><i data-lucide="github"></i
+                    ></a>
+                  </div>
+                  <div class="speaker-btn-wrapper">
+                    <a
+                      href="#contact"
+                      class="btn btn-accent speaker-profile-btn"
+                      >View Profile</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </article>
+
+
+            <article class="speaker-card reveal-up delay-200">
+              <div class="speaker-img-wrapper">
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600"
+                  alt="Dr. Aris Thorne"
+                  class="speaker-img"
+                />
+                <div class="speaker-card-overlay"></div>
+                <div class="speaker-info">
+                  <div class="speaker-designation">Biotech Director</div>
+                  <h3 class="speaker-name">Dr. Aris Thorne</h3>
+                  <div class="speaker-company">HealthTech Laboratories</div>
+                  <div class="speaker-country">
+                    <i data-lucide="map-pin"></i> Zurich, Switzerland
+                  </div>
+
+                  <p class="speaker-bio">
+                    Leading global research in CRISPR therapeutics and
+                    personalized cell therapies for cancer oncology.
+                  </p>
+
+                  <div class="speaker-socials">
+                    <a href="#" aria-label="Aris Thorne Twitter"
+                      ><i data-lucide="twitter"></i
+                    ></a>
+                    <a href="#" aria-label="Aris Thorne LinkedIn"
+                      ><i data-lucide="linkedin"></i
+                    ></a>
+                  </div>
+                  <div class="speaker-btn-wrapper">
+                    <a
+                      href="#contact"
+                      class="btn btn-accent speaker-profile-btn"
+                      >View Profile</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </article>
+
+    
+            <article class="speaker-card reveal-up delay-300">
+              <div class="speaker-img-wrapper">
+                <img
+                  src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=600"
+                  alt="Elena Rostova"
+                  class="speaker-img"
+                />
+                <div class="speaker-card-overlay"></div>
+                <div class="speaker-info">
+                  <div class="speaker-designation">Venture Partner</div>
+                  <h3 class="speaker-name">Elena Rostova</h3>
+                  <div class="speaker-company">FinFuture Capital</div>
+                  <div class="speaker-country">
+                    <i data-lucide="map-pin"></i> London, United Kingdom
+                  </div>
+
+                  <p class="speaker-bio">
+                    Former IMF strategist specializing in blockchain compliance,
+                    global liquidity funds, and micro-loans.
+                  </p>
+
+                  <div class="speaker-socials">
+                    <a href="#" aria-label="Elena Rostova Twitter"
+                      ><i data-lucide="twitter"></i
+                    ></a>
+                    <a href="#" aria-label="Elena Rostova LinkedIn"
+                      ><i data-lucide="linkedin"></i
+                    ></a>
+                  </div>
+                  <div class="speaker-btn-wrapper">
+                    <a
+                      href="#contact"
+                      class="btn btn-accent speaker-profile-btn"
+                      >View Profile</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="speaker-card reveal-up delay-400">
+              <div class="speaker-img-wrapper">
+                <img
+                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600"
+                  alt="Marcus Chen"
+                  class="speaker-img"
+                />
+                <div class="speaker-card-overlay"></div>
+                <div class="speaker-info">
+                  <div class="speaker-designation">Cybersecurity Chief</div>
+                  <h3 class="speaker-name">Marcus Chen</h3>
+                  <div class="speaker-company">Global Defense Network</div>
+                  <div class="speaker-country">
+                    <i data-lucide="map-pin"></i> Singapore
+                  </div>
+
+                  <p class="speaker-bio">
+                    Expert in zero-trust architecture, threat-hunting telemetry,
+                    and critical infrastructure protection.
+                  </p>
+
+                  <div class="speaker-socials">
+                    <a href="#" aria-label="Marcus Chen LinkedIn"
+                      ><i data-lucide="linkedin"></i
+                    ></a>
+                    <a href="#" aria-label="Marcus Chen GitHub"
+                      ><i data-lucide="github"></i
+                    ></a>
+                  </div>
+                  <div class="speaker-btn-wrapper">
+                    <a
+                      href="#contact"
+                      class="btn btn-accent speaker-profile-btn"
+                      >View Profile</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            
+            <article class="speaker-card reveal-up delay-100">
+              <div class="speaker-img-wrapper">
+                <img
+                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600"
+                  alt="Dr. Sophia Martinez"
+                  class="speaker-img"
+                />
+                <div class="speaker-card-overlay"></div>
+                <div class="speaker-info">
+                  <div class="speaker-designation">Climate Scientist</div>
+                  <h3 class="speaker-name">Dr. Sophia Martinez</h3>
+                  <div class="speaker-company">EcoGreen Research</div>
+                  <div class="speaker-country">
+                    <i data-lucide="map-pin"></i> Madrid, Spain
+                  </div>
+
+                  <p class="speaker-bio">
+                    Leading model designs on carbon offset optimization, marine
+                    ecology revitalization, and solar grids.
+                  </p>
+
+                  <div class="speaker-socials">
+                    <a href="#" aria-label="Sophia Martinez Twitter"
+                      ><i data-lucide="twitter"></i
+                    ></a>
+                    <a href="#" aria-label="Sophia Martinez LinkedIn"
+                      ><i data-lucide="linkedin"></i
+                    ></a>
+                  </div>
+                  <div class="speaker-btn-wrapper">
+                    <a
+                      href="#contact"
+                      class="btn btn-accent speaker-profile-btn"
+                      >View Profile</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </article>
+
+    
+            <article class="speaker-card reveal-up delay-200">
+              <div class="speaker-img-wrapper">
+                <img
+                  src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600"
+                  alt="David Kojo"
+                  class="speaker-img"
+                />
+                <div class="speaker-card-overlay"></div>
+                <div class="speaker-info">
+                  <div class="speaker-designation">Executive Director</div>
+                  <h3 class="speaker-name">David Kojo</h3>
+                  <div class="speaker-company">Africa Business Alliance</div>
+                  <div class="speaker-country">
+                    <i data-lucide="map-pin"></i> Accra, Ghana
+                  </div>
+
+                  <p class="speaker-bio">
+                    Author and speaker focused on scaling digital economies,
+                    trade routing policies, and startup capital across Africa.
+                  </p>
+
+                  <div class="speaker-socials">
+                    <a href="#" aria-label="David Kojo Twitter"
+                      ><i data-lucide="twitter"></i
+                    ></a>
+                    <a href="#" aria-label="David Kojo LinkedIn"
+                      ><i data-lucide="linkedin"></i
+                    ></a>
+                  </div>
+                  <div class="speaker-btn-wrapper">
+                    <a
+                      href="#contact"
+                      class="btn btn-accent speaker-profile-btn"
+                      >View Profile</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </article>
+
+        
+            <article class="speaker-card reveal-up delay-300">
+              <div class="speaker-img-wrapper">
+                <img
+                  src="https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&q=80&w=600"
+                  alt="Emily Watson"
+                  class="speaker-img"
+                />
+                <div class="speaker-card-overlay"></div>
+                <div class="speaker-info">
+                  <div class="speaker-designation">VP of EdTech</div>
+                  <h3 class="speaker-name">Emily Watson</h3>
+                  <div class="speaker-company">FutureLearn Group</div>
+                  <div class="speaker-country">
+                    <i data-lucide="map-pin"></i> Toronto, Canada
+                  </div>
+
+                  <p class="speaker-bio">
+                    Innovator building AI-driven adaptive curriculums, VR
+                    immersion class spaces, and global accessibility systems.
+                  </p>
+
+                  <div class="speaker-socials">
+                    <a href="#" aria-label="Emily Watson Twitter"
+                      ><i data-lucide="twitter"></i
+                    ></a>
+                    <a href="#" aria-label="Emily Watson LinkedIn"
+                      ><i data-lucide="linkedin"></i
+                    ></a>
+                  </div>
+                  <div class="speaker-btn-wrapper">
+                    <a
+                      href="#contact"
+                      class="btn btn-accent speaker-profile-btn"
+                      >View Profile</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            
+            <article class="speaker-card reveal-up delay-400">
+              <div class="speaker-img-wrapper">
+                <img
+                  src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600"
+                  alt="Dr. Raj Patel"
+                  class="speaker-img"
+                />
+                <div class="speaker-card-overlay"></div>
+                <div class="speaker-info">
+                  <div class="speaker-designation">Founder & Director</div>
+                  <h3 class="speaker-name">Dr. Raj Patel</h3>
+                  <div class="speaker-company">EduGlobal Institute</div>
+                  <div class="speaker-country">
+                    <i data-lucide="map-pin"></i> New Delhi, India
+                  </div>
+
+                  <p class="speaker-bio">
+                    Leading national educational reforms, rural connectivity
+                    structures, and low-cost learning tablets deployment.
+                  </p>
+
+                  <div class="speaker-socials">
+                    <a href="#" aria-label="Raj Patel LinkedIn"
+                      ><i data-lucide="linkedin"></i
+                    ></a>
+                    <a href="#" aria-label="Raj Patel Twitter"
+                      ><i data-lucide="twitter"></i
+                    ></a>
+                  </div>
+                  <div class="speaker-btn-wrapper">
+                    <a
+                      href="#contact"
+                      class="btn btn-accent speaker-profile-btn"
+                      >View Profile</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section> -->
+
+      <!-- 5. Conferences Section -->
+      <section id="conferences" class="conferences-section">
+        <div class="container">
+          <div class="section-header reveal-up">
+            <span class="badge badge-glass-primary">Calendar</span>
+            <h2>Upcoming Conferences</h2>
+            <p>
+              Register for our premium upcoming events and secure your corporate
+              delegate pass today.
+            </p>
+          </div>
+
+          <div class="grid-3" id="conferencesGrid">
+            <!-- Conference 1 -->
+            <article class="conf-card reveal-up delay-100">
+              <div class="conf-banner-wrapper">
+                <img
+                  src="assets/images/hero_ai.png"
+                  alt="AI Summit Banner"
+                  class="conf-banner"
+                />
+                <span class="badge badge-glass-primary conf-category"
+                  >Artificial Intelligence</span
+                >
+              </div>
+              <div class="conf-body">
+                <h3 class="conf-title">Artificial Intelligence Summit</h3>
+                <div class="conf-meta">
+                  <div class="conf-meta-item">
+                    <i data-lucide="calendar"></i> <span>Oct 12-14, 2026</span>
+                  </div>
+                  <div class="conf-meta-item">
+                    <i data-lucide="map-pin"></i> <span>San Francisco, CA</span>
+                  </div>
+                </div>
+                <p class="conf-desc">
+                  Explore next-generation LLMs, neural chips, AI regulation
+                  models, and the ethics of autonomous systems with industry
+                  experts.
+                </p>
+                <div class="conf-footer">
+                  <a href="#contact" class="btn btn-primary conf-btn"
+                    >Register for Summit</a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <!-- Conference 2 -->
+            <article class="conf-card reveal-up delay-200">
+              <div class="conf-banner-wrapper">
+                <img
+                  src="assets/images/hero_health.png"
+                  alt="Healthcare Summit Banner"
+                  class="conf-banner"
+                />
+                <span
+                  class="badge badge-glass-accent conf-category"
+                  style="
+                    background: rgba(20, 184, 166, 0.1);
+                    color: var(--accent);
+                    border-color: rgba(20, 184, 166, 0.2);
+                  "
+                  >Healthcare</span
+                >
+              </div>
+              <div class="conf-body">
+                <h3 class="conf-title">Healthcare Innovation Summit</h3>
+                <div class="conf-meta">
+                  <div class="conf-meta-item">
+                    <i data-lucide="calendar"></i> <span>Nov 05-07, 2026</span>
+                  </div>
+                  <div class="conf-meta-item">
+                    <i data-lucide="map-pin"></i>
+                    <span>Geneva, Switzerland</span>
+                  </div>
+                </div>
+                <p class="conf-desc">
+                  A deep dive into CRISPR gene editing, robotic surgery
+                  platforms, global viral defense strategies, and patient
+                  telemetry analytics.
+                </p>
+                <div class="conf-footer">
+                  <a href="#contact" class="btn btn-primary conf-btn"
+                    >Register for Summit</a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <!-- Conference 3 -->
+            <article class="conf-card reveal-up delay-300">
+              <div class="conf-banner-wrapper">
+                <img
+                  src="assets/images/hero_finance.png"
+                  alt="Finance Summit Banner"
+                  class="conf-banner"
+                />
+                <span class="badge badge-glass-primary conf-category"
+                  >Finance</span
+                >
+              </div>
+              <div class="conf-body">
+                <h3 class="conf-title">Future of Finance</h3>
+                <div class="conf-meta">
+                  <div class="conf-meta-item">
+                    <i data-lucide="calendar"></i> <span>Dec 01-03, 2026</span>
+                  </div>
+                  <div class="conf-meta-item">
+                    <i data-lucide="map-pin"></i>
+                    <span>London, United Kingdom</span>
+                  </div>
+                </div>
+                <p class="conf-desc">
+                  Unpack blockchain cross-border settlements, digital treasury
+                  assets, quantum algorithmic trading, and ESG funding
+                  regulations.
+                </p>
+                <div class="conf-footer">
+                  <a href="#contact" class="btn btn-primary conf-btn"
+                    >Register for Summit</a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <!-- Conference 4 -->
+            <article class="conf-card reveal-up delay-100">
+              <div class="conf-banner-wrapper">
+                <img
+                  src="assets/images/conf_climate.png"
+                  alt="Climate Summit Banner"
+                  class="conf-banner"
+                />
+                <span
+                  class="badge badge-glass-accent conf-category"
+                  style="
+                    background: rgba(20, 184, 166, 0.1);
+                    color: var(--accent);
+                    border-color: rgba(20, 184, 166, 0.2);
+                  "
+                  >Climate</span
+                >
+              </div>
+              <div class="conf-body">
+                <h3 class="conf-title">Climate Leadership Conference</h3>
+                <div class="conf-meta">
+                  <div class="conf-meta-item">
+                    <i data-lucide="calendar"></i> <span>Jan 18-20, 2027</span>
+                  </div>
+                  <div class="conf-meta-item">
+                    <i data-lucide="map-pin"></i> <span>Tokyo, Japan</span>
+                  </div>
+                </div>
+                <p class="conf-desc">
+                  Laying the plans for next-decade global decarbonization.
+                  Covering solar cell advancements, wind arrays, and
+                  eco-friendly concrete.
+                </p>
+                <div class="conf-footer">
+                  <a href="#contact" class="btn btn-primary conf-btn"
+                    >Register for Summit</a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <!-- Conference 5 -->
+            <article class="conf-card reveal-up delay-200">
+              <div class="conf-banner-wrapper">
+                <img
+                  src="assets/images/conf_cyber.png"
+                  alt="Cybersecurity Banner"
+                  class="conf-banner"
+                />
+                <span class="badge badge-glass-primary conf-category"
+                  >Cybersecurity</span
+                >
+              </div>
+              <div class="conf-body">
+                <h3 class="conf-title">Cybersecurity Forum</h3>
+                <div class="conf-meta">
+                  <div class="conf-meta-item">
+                    <i data-lucide="calendar"></i> <span>Feb 10-12, 2027</span>
+                  </div>
+                  <div class="conf-meta-item">
+                    <i data-lucide="map-pin"></i>
+                    <span>Frankfurt, Germany</span>
+                  </div>
+                </div>
+                <p class="conf-desc">
+                  Defending critical power grids and database clusters.
+                  Zero-trust validation, ransomware defense models, and cloud
+                  sovereignty audits.
+                </p>
+                <div class="conf-footer">
+                  <a href="#contact" class="btn btn-primary conf-btn"
+                    >Register for Summit</a
+                  >
+                </div>
+              </div>
+            </article>
+
+            <!-- Conference 6 -->
+            <article class="conf-card reveal-up delay-300">
+              <div class="conf-banner-wrapper">
+                <img
+                  src="assets/images/conf_edu.png"
+                  alt="Education Banner"
+                  class="conf-banner"
+                />
+                <span
+                  class="badge badge-glass-accent conf-category"
+                  style="
+                    background: rgba(20, 184, 166, 0.1);
+                    color: var(--accent);
+                    border-color: rgba(20, 184, 166, 0.2);
+                  "
+                  >Education</span
+                >
+              </div>
+              <div class="conf-body">
+                <h3 class="conf-title">Global Education Summit</h3>
+                <div class="conf-meta">
+                  <div class="conf-meta-item">
+                    <i data-lucide="calendar"></i> <span>Mar 22-24, 2027</span>
+                  </div>
+                  <div class="conf-meta-item">
+                    <i data-lucide="map-pin"></i> <span>Toronto, Canada</span>
+                  </div>
+                </div>
+                <p class="conf-desc">
+                  Reconstructing educational accessibility. Adaptive curricula
+                  metrics, hybrid virtual lecture halls, and decentralized
+                  classrooms.
+                </p>
+                <div class="conf-footer">
+                  <a href="#contact" class="btn btn-primary conf-btn"
+                    >Register for Summit</a
+                  >
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Why Attend Section -->
+      <section class="section-dark" id="why-attend">
+        <div class="container">
+          <div class="section-header reveal-up">
+            <span class="badge badge-glass-accent">Benefits</span>
+            <h2>Why Attend?</h2>
+            <p>
+              We craft conferences that offer deep value. Here is what you will
+              experience as a registered delegate.
+            </p>
+          </div>
+
+          <div class="why-grid">
+            <!-- Card 1 -->
+            <div
+              class="why-card reveal-up delay-100"
+              style="
+                background: rgba(30, 41, 59, 0.4);
+                border-color: rgba(255, 255, 255, 0.05);
+              "
+            >
+              <div class="why-icon-box"><i data-lucide="users"></i></div>
+              <h3>Networking</h3>
+              <p style="color: var(--text-light-muted)">
+                Establish high-value corporate connections, find academic
+                research partners, and connect with venture funds looking for
+                promising startups.
+              </p>
+            </div>
+
+            <!-- Card 2 -->
+            <div
+              class="why-card reveal-up delay-200"
+              style="
+                background: rgba(30, 41, 59, 0.4);
+                border-color: rgba(255, 255, 255, 0.05);
+              "
+            >
+              <div
+                class="why-icon-box"
+                style="
+                  background: var(--gradient-indigo-cyan);
+                  box-shadow: var(--shadow-glow-teal);
+                "
+              >
+                <i data-lucide="book-open"></i>
+              </div>
+              <h3>Knowledge Sharing</h3>
+              <p style="color: var(--text-light-muted)">
+                Gather firsthand insights from keynote panels, published
+                research whitepapers, and case studies detailing industry
+                success metrics.
+              </p>
+            </div>
+
+            <!-- Card 3 -->
+            <div
+              class="why-card reveal-up delay-300"
+              style="
+                background: rgba(30, 41, 59, 0.4);
+                border-color: rgba(255, 255, 255, 0.05);
+              "
+            >
+              <div class="why-icon-box"><i data-lucide="award"></i></div>
+              <h3>Certification</h3>
+              <p style="color: var(--text-light-muted)">
+                Receive a recognized professional certificate of attendance
+                validating your continuing professional education (CPE) hours.
+              </p>
+            </div>
+
+            <!-- Card 4 -->
+            <div
+              class="why-card reveal-up delay-100"
+              style="
+                background: rgba(30, 41, 59, 0.4);
+                border-color: rgba(255, 255, 255, 0.05);
+              "
+            >
+              <div
+                class="why-icon-box"
+                style="
+                  background: var(--gradient-indigo-cyan);
+                  box-shadow: var(--shadow-glow-teal);
+                "
+              >
+                <i data-lucide="sliders"></i>
+              </div>
+              <h3>Workshops</h3>
+              <p style="color: var(--text-light-muted)">
+                Participate in small, intimate, instructor-led lab sessions
+                where you get hands-on experience building or coding with
+                cutting-edge tools.
+              </p>
+            </div>
+
+            <!-- Card 5 -->
+            <div
+              class="why-card reveal-up delay-200"
+              style="
+                background: rgba(30, 41, 59, 0.4);
+                border-color: rgba(255, 255, 255, 0.05);
+              "
+            >
+              <div class="why-icon-box"><i data-lucide="cpu"></i></div>
+              <h3>Innovation</h3>
+              <p style="color: var(--text-light-muted)">
+                Inspect interactive prototype exhibits, watch live tech demos,
+                and review pilot architectures solving complex enterprise
+                scaling problems.
+              </p>
+            </div>
+
+            <!-- Card 6 -->
+            <div
+              class="why-card reveal-up delay-300"
+              style="
+                background: rgba(30, 41, 59, 0.4);
+                border-color: rgba(255, 255, 255, 0.05);
+              "
+            >
+              <div
+                class="why-icon-box"
+                style="
+                  background: var(--gradient-indigo-cyan);
+                  box-shadow: var(--shadow-glow-teal);
+                "
+              >
+                <i data-lucide="globe"></i>
+              </div>
+              <h3>Global Recognition</h3>
+              <p style="color: var(--text-light-muted)">
+                Position your organization at the forefront of international
+                standards. Share your brand story with key media houses present
+                on-site.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. Event Timeline Section -->
+      <!-- <section id="timeline">
+        <div class="container">
+          <div class="section-header reveal-up">
+            <span class="badge badge-glass-primary">Schedule</span>
+            <h2>Event Timeline</h2>
+            <p>
+              Review the general schedule outline followed during our three-day
+              international summits.
+            </p>
+          </div>
+
+          <div class="timeline-container">
+            
+
+            <div class="timeline-block reveal-up">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-time">Day 1 - 08:30 AM</span>
+                <h3>Registration & Welcoming</h3>
+                <p>
+                  Delegates check-in, pick up custom smart badges, connect to
+                  the event mobile portal, and gather for welcoming coffee
+                  inside the central atrium.
+                </p>
+              </div>
+            </div>
+
+            
+            <div class="timeline-block reveal-up">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-time">Day 1 - 10:00 AM</span>
+                <h3>Keynote Address</h3>
+                <p>
+                  A joint opening address by lead international speakers
+                  reviewing global landscape statistics, followed by a moderated
+                  panel discussing research challenges.
+                </p>
+              </div>
+            </div>
+
+        
+            <div class="timeline-block reveal-up">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-time">Day 2 - 11:30 AM</span>
+                <h3>Breakout Sessions</h3>
+                <p>
+                  Delegates divide into chosen specialized tracks (interactive
+                  labs, academic presentations, policy councils) to review
+                  detailed technical case studies.
+                </p>
+              </div>
+            </div>
+
+            
+            <div class="timeline-block reveal-up">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-time">Day 2 - 04:00 PM</span>
+                <h3>Networking & Lounge Reception</h3>
+                <p>
+                  Speed networking tracks, mocktail mixers, and one-on-one
+                  meeting lounge slots sponsored by institutional partners to
+                  facilitate deal closures.
+                </p>
+              </div>
+            </div>
+
+            
+            <div class="timeline-block reveal-up">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <span class="timeline-time">Day 3 - 03:30 PM</span>
+                <h3>Closing Ceremony</h3>
+                <p>
+                  Annual research awards distribution, summaries of workshop
+                  deliverables, and closing address outlining the next year's
+                  summit dates and locations.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> -->
+
+      <!-- 8. Testimonials Section -->
+      <!-- <section id="testimonials" class="section-dark testimonials-section">
+        <div class="container">
+          <div class="section-header reveal-up">
+            <span class="badge badge-glass-accent">Reviews</span>
+            <h2>Attendee Testimonials</h2>
+            <p>
+              Read honest reviews written by delegates, speakers, and corporate
+              partners about their experience.
+            </p>
+          </div>
+
+          <div class="testimonials-wrapper reveal-scale">
+            <div class="testimonials-container" id="testimonialsContainer">
+              
+              <div class="testimonial-slide">
+                <span class="testimonial-quote-icon">“</span>
+                <div class="testimonial-rating">
+                  <i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i>
+                </div>
+                <blockquote class="testimonial-text">
+                  "The Artificial Intelligence Summit was outstanding. The
+                  quality of academic presentations combined with high-profile
+                  industry networking is unmatched. I secured three pilot
+                  partnerships during Day 2 lounge mixers."
+                </blockquote>
+                <div class="testimonial-profile">
+                  <img
+                    src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200"
+                    alt="Michael Vance"
+                    class="testimonial-avatar"
+                  />
+                  <cite class="testimonial-name">Michael Vance</cite>
+                  <span class="testimonial-role"
+                    >CTO, CyberNet Systems • USA</span
+                  >
+                </div>
+              </div>
+
+              
+              <div class="testimonial-slide">
+                <span class="testimonial-quote-icon">“</span>
+                <div class="testimonial-rating">
+                  <i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i>
+                </div>
+                <blockquote class="testimonial-text">
+                  "Attending the Healthcare Summit in Geneva was
+                  transformational. Hearing Dr. Thorne describe the CRISPR
+                  oncology delivery metrics gave our clinical team concrete
+                  research frameworks to apply to our own labs."
+                </blockquote>
+                <div class="testimonial-profile">
+                  <img
+                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200"
+                    alt="Jessica Lindqvist"
+                    class="testimonial-avatar"
+                  />
+                  <cite class="testimonial-name">Dr. Jessica Lindqvist</cite>
+                  <span class="testimonial-role"
+                    >Senior Researcher, BioMed Labs • Sweden</span
+                  >
+                </div>
+              </div>
+
+            
+              <div class="testimonial-slide">
+                <span class="testimonial-quote-icon">“</span>
+                <div class="testimonial-rating">
+                  <i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i>
+                </div>
+                <blockquote class="testimonial-text">
+                  "I have sponsored multiple global events, but Innotive
+                  Conferences summits consistently deliver the highest corporate
+                  ROI. The quality of executives, directors, and researchers
+                  attending ensures high-level alignment."
+                </blockquote>
+                <div class="testimonial-profile">
+                  <img
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=200"
+                    alt="Thomas Dubois"
+                    class="testimonial-avatar"
+                  />
+                  <cite class="testimonial-name">Thomas Dubois</cite>
+                  <span class="testimonial-role"
+                    >Venture Partner, AlphaCapital • France</span
+                  >
+                </div>
+              </div>
+
+             
+              <div class="testimonial-slide">
+                <span class="testimonial-quote-icon">“</span>
+                <div class="testimonial-rating">
+                  <i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i>
+                </div>
+                <blockquote class="testimonial-text">
+                  "As a speaker, I felt exceptionally cared for. The stage
+                  management, telemetry coordination, and speaker lounges were
+                  flawless. The Q&A session from the audience was sharp and
+                  highly technical."
+                </blockquote>
+                <div class="testimonial-profile">
+                  <img
+                    src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=200"
+                    alt="Amara Kojo"
+                    class="testimonial-avatar"
+                  />
+                  <cite class="testimonial-name">Amara Kojo</cite>
+                  <span class="testimonial-role"
+                    >Director, CleanPower Africa • Ghana</span
+                  >
+                </div>
+              </div>
+
+              
+              <div class="testimonial-slide">
+                <span class="testimonial-quote-icon">“</span>
+                <div class="testimonial-rating">
+                  <i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i>
+                </div>
+                <blockquote class="testimonial-text">
+                  "The Climate Leadership summit in Tokyo provided actionable
+                  policy templates. The workshops on solar-grid battery storage
+                  solutions will guide our city planning roadmap for years to
+                  come."
+                </blockquote>
+                <div class="testimonial-profile">
+                  <img
+                    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200"
+                    alt="Kenji Saito"
+                    class="testimonial-avatar"
+                  />
+                  <cite class="testimonial-name">Kenji Saito</cite>
+                  <span class="testimonial-role"
+                    >Urban Infrastructure Lead, Tokyo Metro • Japan</span
+                  >
+                </div>
+              </div>
+
+             
+              <div class="testimonial-slide">
+                <span class="testimonial-quote-icon">“</span>
+                <div class="testimonial-rating">
+                  <i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i><i data-lucide="star"></i
+                  ><i data-lucide="star"></i>
+                </div>
+                <blockquote class="testimonial-text">
+                  "The security audits workshop during the Cybersecurity Forum
+                  alone justified the registration ticket cost. Having industry
+                  CISOs review and validate our database defense blueprints was
+                  invaluable."
+                </blockquote>
+                <div class="testimonial-profile">
+                  <img
+                    src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200"
+                    alt="Sophia Hansen"
+                    class="testimonial-avatar"
+                  />
+                  <cite class="testimonial-name">Sophia Hansen</cite>
+                  <span class="testimonial-role"
+                    >CISO, NordicData Security • Norway</span
+                  >
+                </div>
+              </div>
+            </div>
+
+             Carousel Controls 
+            <div class="slider-nav">
+              <button
+                class="slider-btn slider-btn-prev"
+                aria-label="Previous testimonial"
+              >
+                <i data-lucide="arrow-left"></i>
+              </button>
+              <div class="slider-dots"></div>
+              <button
+                class="slider-btn slider-btn-next"
+                aria-label="Next testimonial"
+              >
+                <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section> -->
+
+      <!-- 9. Gallery Section -->
+      <!-- <section id="gallery">
+        <div class="container">
+          <div class="section-header reveal-up">
+            <span class="badge badge-glass-primary">Moments</span>
+            <h2>Conference Gallery</h2>
+            <p>
+              A visual walkthrough of recent conferences, delegates networking,
+              and keynote panels in session.
+            </p>
+          </div>
+
+          <div class="gallery-grid">
+            
+            <div class="gallery-item gallery-item-1 reveal-scale delay-100">
+              <img
+                src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?auto=format&fit=crop&q=80&w=800"
+                alt="Large Conference Hall presentation"
+                class="gallery-img"
+              />
+              <div class="gallery-item-overlay">
+                <div class="gallery-icon"><i data-lucide="zoom-in"></i></div>
+                <h4>Keynote Session</h4>
+                <p>Global Leadership Summit</p>
+              </div>
+            </div>
+
+            
+            <div class="gallery-item gallery-item-2 reveal-scale delay-200">
+              <img
+                src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800"
+                alt="Speakers panel discussion"
+                class="gallery-img"
+              />
+              <div class="gallery-item-overlay">
+                <div class="gallery-icon"><i data-lucide="zoom-in"></i></div>
+                <h4>Expert Panel</h4>
+                <p>Healthcare Innovation</p>
+              </div>
+            </div>
+
+            
+            <div class="gallery-item reveal-scale delay-300">
+              <img
+                src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=600"
+                alt="Workshop team collaboration"
+                class="gallery-img"
+              />
+              <div class="gallery-item-overlay">
+                <div class="gallery-icon"><i data-lucide="zoom-in"></i></div>
+                <h4>Interactive Labs</h4>
+                <p>Hands-on Tech Workshop</p>
+              </div>
+            </div>
+
+            
+            <div class="gallery-item reveal-scale delay-100">
+              <img
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=600"
+                alt="Delegates networking session"
+                class="gallery-img"
+              />
+              <div class="gallery-item-overlay">
+                <div class="gallery-icon"><i data-lucide="zoom-in"></i></div>
+                <h4>VIP Lounge Networking</h4>
+                <p>Future of Finance London</p>
+              </div>
+            </div>
+
+            
+            <div class="gallery-item gallery-item-5 reveal-scale delay-200">
+              <img
+                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800"
+                alt="Conference venue modern architecture"
+                class="gallery-img"
+              />
+              <div class="gallery-item-overlay">
+                <div class="gallery-icon"><i data-lucide="zoom-in"></i></div>
+                <h4>Modern Venues</h4>
+                <p>Frankfurt Exhibition Center</p>
+              </div>
+            </div>
+
+            
+            <div class="gallery-item reveal-scale delay-300">
+              <img
+                src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=600"
+                alt="Audience listening to speaker"
+                class="gallery-img"
+              />
+              <div class="gallery-item-overlay">
+                <div class="gallery-icon"><i data-lucide="zoom-in"></i></div>
+                <h4>10,000+ Attendees</h4>
+                <p>Climate Leadership Tokyo</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> -->
+
+      <!-- 10. Contact Section -->
+      <section id="contact">
+        <div class="container">
+          <div class="section-header reveal-up">
+            <span class="badge badge-glass-primary">Registration</span>
+            <h2>Secure Your Pass</h2>
+            <p>
+              Complete the registration form to submit your application for a
+              delegate credentials package.
+            </p>
+          </div>
+
+          <div class="contact-grid">
+            <!-- Left: Company Info & Maps -->
+            <div class="contact-info reveal-left">
+              <div class="contact-card">
+                <div class="contact-item">
+                  <!-- <div class="contact-icon"><i data-lucide="map-pin"></i></div> -->
+                  <div>
+                    <!-- <h4>Global Office Headquarters</h4>
+                    <p>
+                      500 Howard Street, Suite 400<br />San Francisco, CA 94105,
+                      USA
+                    </p> -->
+                  </div>
+                </div>
+
+                <div class="contact-item">
+                  <div class="contact-icon"><i data-lucide="mail"></i></div>
+                  <div>
+                    <h4>Corporate Registrar</h4>
+                    <p>info@innotiveconferences.com</p>
+                  </div>
+                </div>
+
+                <div class="contact-item">
+                  <div class="contact-icon"><i data-lucide="phone"></i></div>
+                  <div>
+                    <h4>For any Inquiries</h4>
+                    <p>+91 79933 54397</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interactive Maps Iframe (Sleek Dark Mode Grayscale Filtered) -->
+              <div class="contact-map-placeholder">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.0863920959066!2d-122.3999127!3d37.7867301!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808580628a55c68f%3A0xe54d8b5843a0d1e3!2s500%20Howard%20St%2C%20San%20Francisco%2C%20CA%2094105!5e0!3m2!1sen!2sus!4v1689201902990!5m2!1sen!2sus"
+                  allowfullscreen=""
+                  loading="lazy"
+                  title="Innotive Conferences Headquarters Map Location"
+                >
+                </iframe>
+              </div>
+            </div>
+
+            <!-- Right: Form -->
+            <div class="contact-form-container reveal-right">
+              <form id="registrationForm" novalidate>
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input
+                      type="text"
+                      id="fullName"
+                      class="form-control"
+                      placeholder="Jane Doe"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="emailAddress">Work Email</label>
+                    <input
+                      type="email"
+                      id="emailAddress"
+                      class="form-control"
+                      placeholder="jane.doe@organization.com"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group-row">
+                  <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <input
+                      type="tel"
+                      id="phoneNumber"
+                      class="form-control"
+                      placeholder="+1 (415) 555-0123"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="organizationName">Organization</label>
+                    <input
+                      type="text"
+                      id="organizationName"
+                      class="form-control"
+                      placeholder="Enterprise Tech Inc."
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="conferenceInterest">Select Conference</label>
+                  <select id="conferenceInterest" class="form-control" required>
+                    <option value="" disabled selected>
+                      -- Choose an Event --
+                    </option>
+                    <option value="ai">
+                      Artificial Intelligence Summit (San Francisco, CA)
+                    </option>
+                    <option value="health">
+                      Healthcare Innovation Summit (Geneva, Switzerland)
+                    </option>
+                    <option value="finance">
+                      Future of Finance Summit (London, UK)
+                    </option>
+                    <option value="climate">
+                      Climate Leadership Conference (Tokyo, Japan)
+                    </option>
+                    <option value="cyber">
+                      Cybersecurity Forum (Frankfurt, Germany)
+                    </option>
+                    <option value="edu">
+                      Global Education Summit (Toronto, Canada)
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="formMessage"
+                    >Special Accommodation / Message</label
+                  >
+                  <textarea
+                    id="formMessage"
+                    class="form-control"
+                    placeholder="Enter dietary constraints, accessibility requests, or questions..."
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  class="btn btn-primary btn-grow-outline"
+                  style="width: 100%; margin-top: 10px"
+                  id="submitMessageBtn"
+                >
+                  <i data-lucide="send"></i> Request Credentials Pass
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11. Newsletter CTA Section -->
+      <section class="newsletter-section">
+        <div class="container">
+          <div class="newsletter-box reveal-scale">
+            <div class="grid-2">
+              <div class="newsletter-content">
+                <h2>Stay Updated With Upcoming Global Conferences</h2>
+                <p>
+                  Subscribe to our quarterly research reviews and receive
+                  exclusive early-bird registration invites.
+                </p>
+              </div>
+              <div>
+                <form id="newsletterForm" class="newsletter-form">
+                  <input
+                    type="email"
+                    id="newsletterEmail"
+                    name="email"
+                    class="form-control"
+                    placeholder="enter.email@address.com"
+                    aria-label="Newsletter Email Address"
+                    required
+                  />
+
+                  <button type="submit" class="btn btn-accent">
+                    <i data-lucide="bell"></i> Subscribe
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 12. Footer Section -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-top">
+          <!-- Col 1: Brand -->
+          <div class="footer-brand">
+            <a href="#" class="logo">
+              <div class="logo-icon"><i data-lucide="globe"></i></div>
+              <span>Innotive Conferences</span>
+            </a>
+            <p>
+              Laying down the infrastructure for academic knowledge transfer and
+              executive cooperation across various global industries.
+            </p>
+            <div class="social-links">
+              <a
+                href="https://www.instagram.com/innotiveconferences/"
+                class="social-icon"
+                aria-label="innotiveconferences Instagram"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <rect
+                    x="3"
+                    y="3"
+                    width="18"
+                    height="18"
+                    rx="5"
+                    ry="5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  ></rect>
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="4.2"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  ></circle>
+                  <circle
+                    cx="17.35"
+                    cy="6.65"
+                    r="1.1"
+                    fill="currentColor"
+                  ></circle>
+                </svg>
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=61591944296175"
+                class="social-icon"
+                aria-label="innotiveconferences facebook"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M13.5 20v-7.5H16l.45-3H13.5V4.8c0-.9.25-1.5 1.5-1.5h1.6V.8C16.1.7 15.2.7 14.2.7c-2.2 0-3.7 1.3-3.7 3.8V9.5H8v3h2.5V20h3Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </a>
+              <a
+                href="https://in.linkedin.com/in/innotive-conferences-6b2636421"
+                class="social-icon"
+                aria-label="innotiveconferences LinkedIn"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M6.94 8.5a1.56 1.56 0 1 0 0-3.12 1.56 1.56 0 0 0 0 3.12ZM5.5 9.75h2.88V19H5.5V9.75Zm4.6 0h2.76v1.25h.04c.38-.72 1.33-1.48 2.74-1.48 2.93 0 3.46 1.93 3.46 4.44V19h-2.88v-8.2c0-1.95-.03-4.46-2.72-4.46-2.72 0-3.13 2.12-3.13 4.33V19H10.1V9.75Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </a>
+
+              <a
+                href="https://www.youtube.com/@InnotiveConferences"
+                class="social-icon"
+                aria-label="innotiveconferences youtube"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <rect
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="14"
+                    rx="3"
+                    ry="3"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  ></rect>
+                  <path
+                    d="m10.5 9 5 3-5 3V9Z"
+                    fill="currentColor"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </a>
+              <a
+                href="https://x.com/innotiveConf"
+                class="social-icon"
+                aria-label="innotiveconferences twitter"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M18.5 4H21l-6.4 7.3L22 20h-5.7l-4.4-5.8L7.1 20H4.8l6.9-7.9L2 4h5.8l4 5.2L18.5 4Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Col 2: Company -->
+          <div>
+            <h4 class="footer-title">Company</h4>
+            <ul class="footer-links">
+              <li><a href="#about" class="footer-link">About Us</a></li>
+              <li><a href="#speakers" class="footer-link">Our Board</a></li>
+              <li><a href="#testimonials" class="footer-link">Press Kit</a></li>
+              <li>
+                <a href="#contact" class="footer-link">Career Opportunities</a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Col 3: Conferences -->
+          <div>
+            <h4 class="footer-title">Contact Us</h4>
+            <ul class="footer-links">
+              <!-- <li><a href="#conferences" class="footer-link">AI Summit</a></li> -->
+              <li>
+                <a
+                  href="mailto:info@innotiveconferences.com"
+                  class="footer-link"
+                >
+                  info@innotiveconferences.com
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/+917993354397" class="footer-link">
+                  +91 79933 54397
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Col 4: Quick Links -->
+          <div>
+            <h4 class="footer-title">Quick Links</h4>
+            <ul class="footer-links">
+              <li>
+                <a href="#timeline" class="footer-link">Event Schedule</a>
+              </li>
+              <li>
+                <a href="#gallery" class="footer-link">Conference Gallery</a>
+              </li>
+              <li>
+                <a href="#contact" class="footer-link">Registrar Office</a>
+              </li>
+              <li><a href="#about" class="footer-link">FAQs & Support</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p class="copyright">
+            &copy; 2026 Innotive Conferences LLC. All rights reserved.
+          </p>
+          <div class="footer-bottom-links">
+            <a href="#" class="footer-bottom-link">Privacy Policy</a>
+            <a href="#" class="footer-bottom-link">Terms & Conditions</a>
+            <a href="#" class="footer-bottom-link">Cookie Preferences</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Lightbox Modal Container for Gallery -->
+    <div
+      class="lightbox"
+      id="galleryLightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Image Lightbox Viewer"
+    >
+      <button
+        class="lightbox-close"
+        id="lightboxClose"
+        aria-label="Close image viewer"
+      >
+        &times;
+      </button>
+      <img src="" alt="" class="lightbox-content" id="lightboxImg" />
+    </div>
+
+    <!-- Success Modal Popup for Registrations -->
+    <div
+      class="success-modal"
+      id="successModal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Registration Success Dialog"
+    >
+      <div class="success-card">
+        <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
+        <h3>Registration Application Received!</h3>
+        <p>
+          Thank you for submitting your registration request. Our office of
+          registrar will review your organizational details and email your
+          credentials package invoice within 24 hours.
+        </p>
+        <button class="btn btn-primary" style="width: 100%" id="closeModalBtn">
+          Return to Website
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const form = document.getElementById("newsletterForm");
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch(
+            "https://script.google.com/macros/s/AKfycbwWNJWC15MWIIQ6bpYsYgOWN-f-Tobb7WjWz9C0fM4rY6K4SIbtvmqzZiub3-pzh1Nzbw/exec",
+            {
+              method: "POST",
+              body: formData,
+            },
+          );
+
+          const result = await response.json();
+          console.log(result);
+
+          if (result.status === "success") {
+            alert("Subscribed!");
+            form.reset();
+          } else {
+            alert(result.message);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    </script>
+  </body>
+</html>

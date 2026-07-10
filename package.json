@@ -1,0 +1,14 @@
+{
+  "name": "innotive-conferences-conferences",
+  "version": "1.0.0",
+  "description": "Premium Global Conferences and Summits Website",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.4.9"
+  }
+}
