@@ -1,0 +1,12 @@
+{
+  "siteUrl": "https://innotiveconferences.com",
+  "apiEndpoints": {
+    "brochure": "https://script.google.com/macros/s/AKfycbwM_SO2DqnAwwZqJAS9Ga4YkFtWVGfRiFoP65qJCl8aXvz2ryyUaG2fdRA64ehz0D2sbg/exec",
+    "abstract": "https://script.google.com/macros/s/AKfycbyWLx1pJtP2zUxx1EAh6D-lj2dnhry2bG8-f5yAYfhaACoglhZBR3_ZTulRjfab-HCn/exec",
+    "register": ""
+  },
+  "abstractTemplateUrl": "https://drive.google.com/uc?export=download&id=1xB7BHZfz9Qb7n-kIVJ88thwrkLX3yNKd",
+  "termsUrl": "",
+  "maxAbstractMB": 5,
+  "titles": ["Dr.", "Prof.", "Mr.", "Ms.", "Mrs."]
+}

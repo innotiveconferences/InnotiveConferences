@@ -44,7 +44,9 @@ function initMobileNav() {
 
     const toggleMenu = () => {
         header.classList.toggle('nav-active');
-        if (header.classList.contains('nav-active')) {
+        const isOpen = header.classList.contains('nav-active');
+        toggleBtn.setAttribute('aria-expanded', String(isOpen));
+        if (isOpen) {
             document.body.style.overflow = 'hidden'; // Lock scrolling
         } else {
             document.body.style.overflow = ''; // Unlock scrolling

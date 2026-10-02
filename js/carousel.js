@@ -22,7 +22,9 @@ function initHeroSlider() {
     };
 
     // Auto rotate background
-    setInterval(nextSlide, slideInterval);
+    setInterval(() => {
+        if (!document.hidden) nextSlide();
+    }, slideInterval);
 }
 
 /**
@@ -35,7 +37,7 @@ function initTestimonialsSlider() {
     const nextBtn = document.querySelector('.slider-btn-next');
     const dotsContainer = document.querySelector('.slider-dots');
 
-    if (!container || slides.length === 0) return;
+    if (!container || slides.length === 0 || !dotsContainer) return;
 
     let currentSlide = 0;
     const totalSlides = slides.length;

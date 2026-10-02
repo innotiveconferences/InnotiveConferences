@@ -21,10 +21,26 @@
 .site-header.scrolled {
     height: 70px;
     background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-light);
     box-shadow: var(--shadow-sm);
+}
+
+/* Blur lives on a pseudo-element: backdrop-filter on the header itself would
+   make it the containing block of the fixed mobile drawer. */
+.site-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: opacity var(--transition-normal);
+}
+
+.site-header.scrolled::before {
+    opacity: 1;
 }
 
 /* Header Container */
@@ -350,8 +366,8 @@
         color: var(--text-light);
     }
     
-    .nav-actions {
-        display: none; /* In mobile, CTA is placed inside menu drawer or simplified */
+    .nav-actions .btn {
+        display: none; /* Hide CTA on mobile but keep the hamburger toggle visible */
     }
     
     .grid-2 {

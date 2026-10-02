@@ -25,8 +25,12 @@
       property="og:description"
       content="Join world-class summits across AI, Healthcare, Finance, and Climate Change. Connect with international speakers."
     />
-    <meta property="og:image" content="assets/images/hero_ai.png" />
+    <meta
+      property="og:image"
+      content="https://innotiveconferences.com/assets/images/hero_ai.png"
+    />
     <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- CSS stylesheets -->
     <link rel="stylesheet" href="css/variables.css" />
@@ -36,7 +40,7 @@
     <link rel="stylesheet" href="css/animations.css" />
 
     <!-- Lucide Icons Library -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script defer src="https://unpkg.com/lucide@0.469.0"></script>
 
     <!-- Defer loading Javascript files -->
     <script src="js/app.js" type="module" defer></script>
@@ -662,27 +666,32 @@
                     color: var(--accent);
                     border-color: rgba(20, 184, 166, 0.2);
                   "
-                  >Healthcare</span
+                  >Public Health</span
                 >
               </div>
               <div class="conf-body">
-                <h3 class="conf-title">Healthcare Innovation Summit</h3>
+                <h3 class="conf-title">
+                  International Conference on Public Health (ICPH2026)
+                </h3>
                 <div class="conf-meta">
                   <div class="conf-meta-item">
-                    <i data-lucide="calendar"></i> <span>Nov 05-07, 2026</span>
+                    <i data-lucide="calendar"></i> <span>Oct 14, 2026</span>
                   </div>
                   <div class="conf-meta-item">
-                    <i data-lucide="map-pin"></i>
-                    <span>Geneva, Switzerland</span>
+                    <i data-lucide="video"></i>
+                    <span>Online via Zoom</span>
                   </div>
                 </div>
                 <p class="conf-desc">
-                  A deep dive into CRISPR gene editing, robotic surgery
-                  platforms, global viral defense strategies, and patient
-                  telemetry analytics.
+                  Advancing Public Health Through Innovation, Equity, and
+                  Global Collaboration. Leading experts, researchers, and
+                  practitioners share research across 28 scientific session
+                  topics.
                 </p>
                 <div class="conf-footer">
-                  <a href="#contact" class="btn btn-primary conf-btn"
+                  <a
+                    href="conferences/icph2026.html"
+                    class="btn btn-primary conf-btn"
                     >Register for Summit</a
                   >
                 </div>
@@ -1375,11 +1384,10 @@
       <section id="contact">
         <div class="container">
           <div class="section-header reveal-up">
-            <span class="badge badge-glass-primary">Registration</span>
-            <h2>Secure Your Pass</h2>
+            <span class="badge badge-glass-primary">Contact</span>
+            <h2>Get In Touch</h2>
             <p>
-              Complete the registration form to submit your application for a
-              delegate credentials package.
+              Have questions or need assistance? Fill out the form below and our team will get back to you shortly.
             </p>
           </div>
 
@@ -1431,21 +1439,25 @@
             <div class="contact-form-container reveal-right">
               <form id="registrationForm" novalidate>
                 <div class="form-group-row">
+                  <!-- Full name -->
                   <div class="form-group">
                     <label for="fullName">Full Name</label>
                     <input
                       type="text"
                       id="fullName"
+                      name="fullName"
                       class="form-control"
                       placeholder="Jane Doe"
                       required
                     />
                   </div>
+                  <!-- Email -->
                   <div class="form-group">
-                    <label for="emailAddress">Work Email</label>
+                    <label for="emailAddress">Email</label>
                     <input
                       type="email"
                       id="emailAddress"
+                      name="email"
                       class="form-control"
                       placeholder="jane.doe@organization.com"
                       required
@@ -1459,16 +1471,18 @@
                     <input
                       type="tel"
                       id="phoneNumber"
+                      name="phone"
                       class="form-control"
                       placeholder="+1 (415) 555-0123"
                       required
                     />
                   </div>
                   <div class="form-group">
-                    <label for="organizationName">Organization</label>
+                    <label for="organizationName">Organization / University</label>
                     <input
                       type="text"
                       id="organizationName"
+                      name="organization"
                       class="form-control"
                       placeholder="Enterprise Tech Inc."
                       required
@@ -1477,40 +1491,14 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="conferenceInterest">Select Conference</label>
-                  <select id="conferenceInterest" class="form-control" required>
-                    <option value="" disabled selected>
-                      -- Choose an Event --
-                    </option>
-                    <option value="ai">
-                      Artificial Intelligence Summit (San Francisco, CA)
-                    </option>
-                    <option value="health">
-                      Healthcare Innovation Summit (Geneva, Switzerland)
-                    </option>
-                    <option value="finance">
-                      Future of Finance Summit (London, UK)
-                    </option>
-                    <option value="climate">
-                      Climate Leadership Conference (Tokyo, Japan)
-                    </option>
-                    <option value="cyber">
-                      Cybersecurity Forum (Frankfurt, Germany)
-                    </option>
-                    <option value="edu">
-                      Global Education Summit (Toronto, Canada)
-                    </option>
-                  </select>
-                </div>
-
-                <div class="form-group">
                   <label for="formMessage"
-                    >Special Accommodation / Message</label
+                    >Query / Message</label
                   >
                   <textarea
                     id="formMessage"
+                    name="message"
                     class="form-control"
-                    placeholder="Enter dietary constraints, accessibility requests, or questions..."
+                    placeholder="Enter your message..."
                   ></textarea>
                 </div>
 
@@ -1520,7 +1508,7 @@
                   style="width: 100%; margin-top: 10px"
                   id="submitMessageBtn"
                 >
-                  <i data-lucide="send"></i> Request Credentials Pass
+                  <i data-lucide="send"></i> Send
                 </button>
               </form>
             </div>
@@ -1701,8 +1689,6 @@
             <h4 class="footer-title">Company</h4>
             <ul class="footer-links">
               <li><a href="#about" class="footer-link">About Us</a></li>
-              <li><a href="#speakers" class="footer-link">Our Board</a></li>
-              <li><a href="#testimonials" class="footer-link">Press Kit</a></li>
               <li>
                 <a href="#contact" class="footer-link">Career Opportunities</a>
               </li>
@@ -1723,7 +1709,7 @@
                 </a>
               </li>
               <li>
-                <a href="https://wa.me/+917993354397" class="footer-link">
+                <a href="https://wa.me/917993354397" class="footer-link">
                   +91 79933 54397
                 </a>
               </li>
@@ -1734,12 +1720,6 @@
           <div>
             <h4 class="footer-title">Quick Links</h4>
             <ul class="footer-links">
-              <li>
-                <a href="#timeline" class="footer-link">Event Schedule</a>
-              </li>
-              <li>
-                <a href="#gallery" class="footer-link">Conference Gallery</a>
-              </li>
               <li>
                 <a href="#contact" class="footer-link">Registrar Office</a>
               </li>
@@ -1789,11 +1769,9 @@
     >
       <div class="success-card">
         <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
-        <h3>Registration Application Received!</h3>
+        <h3>Contact Request Submitted</h3>
         <p>
-          Thank you for submitting your registration request. Our office of
-          registrar will review your organizational details and email your
-          credentials package invoice within 24 hours.
+          Thank you for contacting us. Our team will review your request and get back to you soon.
         </p>
         <button class="btn btn-primary" style="width: 100%" id="closeModalBtn">
           Return to Website
@@ -1801,36 +1779,5 @@
       </div>
     </div>
 
-    <script>
-      const form = document.getElementById("newsletterForm");
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(form);
-
-        try {
-          const response = await fetch(
-            "https://script.google.com/macros/s/AKfycbwWNJWC15MWIIQ6bpYsYgOWN-f-Tobb7WjWz9C0fM4rY6K4SIbtvmqzZiub3-pzh1Nzbw/exec",
-            {
-              method: "POST",
-              body: formData,
-            },
-          );
-
-          const result = await response.json();
-          console.log(result);
-
-          if (result.status === "success") {
-            alert("Subscribed!");
-            form.reset();
-          } else {
-            alert(result.message);
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      });
-    </script>
   </body>
 </html>

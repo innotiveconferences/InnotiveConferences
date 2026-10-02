@@ -1,9 +1,10 @@
 {
-  "name": "innotive-conferences-conferences",
+  "name": "innotive-conferences",
+  "private": true,
   "version": "1.0.0",
   "description": "Premium Global Conferences and Summits Website",
-  "main": "index.html",
   "scripts": {
+    "generate": "node scripts/build-conferences.mjs",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
