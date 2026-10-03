@@ -14,16 +14,23 @@ import { renderConference } from "./templates/conference.mjs";
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 export const OUT_DIR = "conferences";
 
-const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), "utf8"));
+const readJson = (rel) =>
+  JSON.parse(fs.readFileSync(path.join(ROOT, rel), "utf8"));
 
 /**
  * Pull the <footer> out of index.html and re-point in-page anchors at the
  * main site (footer links like #about / #contact live on index.html).
  */
 function extractFooter(indexHtml) {
-  const match = indexHtml.match(/<footer class="site-footer">[\s\S]*?<\/footer>/);
-  if (!match) throw new Error("build-conferences: <footer class=\"site-footer\"> not found in index.html");
+  const match = indexHtml.match(
+    /<footer class="site-footer">[\s\S]*?<\/footer>/,
+  );
+  if (!match)
+    throw new Error(
+      'build-conferences: <footer class="site-footer"> not found in index.html',
+    );
   return match[0]
+    .replace(/src="assets\//g, 'src="../assets/')
     .replace(/href="#"/g, 'href="/"')
     .replace(/href="#([\w-]+)"/g, 'href="/#$1"');
 }
@@ -32,23 +39,34 @@ function extractFooter(indexHtml) {
 export function generateConferencePages() {
   const site = readJson("data/site.json");
   const countries = readJson("data/countries.json");
-  const footer = extractFooter(fs.readFileSync(path.join(ROOT, "index.html"), "utf8"));
+  const footer = extractFooter(
+    fs.readFileSync(path.join(ROOT, "index.html"), "utf8"),
+  );
 
   const confDir = path.join(ROOT, "data/conferences");
   fs.mkdirSync(path.join(ROOT, OUT_DIR), { recursive: true });
 
   const pages = {};
-  for (const file of fs.readdirSync(confDir).filter((f) => f.endsWith(".json")).sort()) {
+  for (const file of fs
+    .readdirSync(confDir)
+    .filter((f) => f.endsWith(".json"))
+    .sort()) {
     const conf = readJson(`data/conferences/${file}`);
     const rel = `${OUT_DIR}/${conf.slug}.html`;
-    fs.writeFileSync(path.join(ROOT, rel), renderConference({ conf, site, countries, footer }));
+    fs.writeFileSync(
+      path.join(ROOT, rel),
+      renderConference({ conf, site, countries, footer }),
+    );
     pages[conf.slug] = rel;
   }
   return pages;
 }
 
 // CLI: node scripts/build-conferences.mjs
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (
+  process.argv[1] &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+) {
   const pages = generateConferencePages();
   for (const rel of Object.values(pages)) console.log(`generated ${rel}`);
 }

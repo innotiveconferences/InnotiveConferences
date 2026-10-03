@@ -1,0 +1,96 @@
+{
+  "id": "icai2026",
+  "slug": "icai2026",
+  "shortName": "ICAI2026",
+  "name": "Artificial Intelligence Summit",
+  "theme": "Responsible AI, practical applications, and collaborative research",
+  "date": "2026-12-27",
+  "nextEventDate": "",
+  "mode": "Online via Zoom",
+  "timeDisplay": "10:00 AM – 01:35 PM (GMT)",
+  "timezoneLabel": "GMT",
+  "timeNote": "UK timings",
+  "supportEmail": "public-health@innotiveconferences.com",
+  "registrationOpens": "2026-07-31",
+  "brochureUrl": "",
+  "heroImage": "assets/images/hero_ai.png",
+  "aboutImage": "assets/images/placeholder-about.svg",
+  "seo": {
+    "title": "ICAI2026 | Artificial Intelligence Summit | Innotive Conferences",
+    "description": "Artificial Intelligence Summit (ICAI2026), December 27, 2026. Explore responsible AI, practical applications, and collaborative research. Register online."
+  },
+  "about": [
+    "The Artificial Intelligence Summit brings together researchers, practitioners, and industry professionals to exchange perspectives on artificial intelligence and its applications.",
+    "Sessions focus on machine learning, generative AI, data science, responsible development, and the opportunities and challenges of applying AI across research and industry."
+  ],
+  "topics": [
+    "Machine Learning and Deep Learning",
+    "Generative AI and Large Language Models",
+    "Natural Language Processing",
+    "Computer Vision and Robotics",
+    "AI in Healthcare and Life Sciences",
+    "Data Science and Big Data",
+    "Responsible AI, Safety, and Ethics",
+    "AI Governance and Regulation",
+    "Human-AI Collaboration",
+    "AI Applications in Industry"
+  ],
+  "schedule": [],
+  "scheduleNotes": [],
+  "speakerGroups": [],
+  "guidelines": [],
+  "faqs": [],
+  "pricing": {
+    "currency": "USD",
+    "tiers": [
+      {
+        "id": "earlybird",
+        "label": "Earlybird Registration",
+        "endsOn": "2026-09-30"
+      },
+      {
+        "id": "second",
+        "label": "Second Term Registration",
+        "endsOn": "2026-10-31"
+      },
+      { "id": "final", "label": "Final Registration", "endsOn": "2026-11-10" }
+    ],
+    "categories": [
+      {
+        "id": "oral",
+        "label": "Oral/Keynote/Plenary/Poster Presentation",
+        "prices": { "earlybird": 199, "second": 299, "final": 399 }
+      },
+      {
+        "id": "student-oral",
+        "label": "Student Oral/Poster Presentation",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "recorded",
+        "label": "Recorded Video Presentation",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "workshop",
+        "label": "Workshop",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "delegate",
+        "label": "Delegate",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "group",
+        "label": "Group Registration (Participants - 3 to 5 Members)",
+        "prices": { "earlybird": 500, "second": 600, "final": 700 }
+      },
+      {
+        "id": "group-student",
+        "label": "Group Registration (Students - 3 to 5 Members)",
+        "prices": { "earlybird": 300, "second": 400, "final": 500 }
+      }
+    ]
+  }
+}

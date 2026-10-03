@@ -1,0 +1,95 @@
+{
+  "id": "icre2026",
+  "slug": "icre2026",
+  "shortName": "ICRE2026",
+  "name": "Renewable Energy Summit",
+  "theme": "Innovation for a resilient, low-carbon energy future",
+  "date": "2026-10-14",
+  "mode": "Online via Zoom",
+  "timeDisplay": "10:00 AM – 01:35 PM (GMT)",
+  "timezoneLabel": "GMT",
+  "timeNote": "UK timings",
+  "supportEmail": "public-health@innotiveconferences.com",
+  "registrationOpens": "2026-07-31",
+  "brochureUrl": "",
+  "heroImage": "assets/images/conf_renew.png",
+  "aboutImage": "assets/images/placeholder-about.svg",
+  "seo": {
+    "title": "ICRE2026 | Renewable Energy Summit | Innotive Conferences",
+    "description": "Renewable Energy Summit (ICRE2026), October 14, 2026. Explore innovation for a resilient, low-carbon energy future. Register online."
+  },
+  "about": [
+    "The Renewable Energy Summit brings together researchers, energy professionals, and policymakers to exchange ideas on clean energy technologies and deployment.",
+    "Topics span renewable generation, storage, grid integration, sustainable fuels, efficiency, and the policies and investment approaches that support a lower-carbon energy system."
+  ],
+  "topics": [
+    "Solar and Photovoltaic Systems",
+    "Wind Energy and Offshore Systems",
+    "Energy Storage and Battery Technologies",
+    "Hydropower and Marine Energy",
+    "Grid Integration and Smart Grids",
+    "Green Hydrogen and E-fuels",
+    "Energy Efficiency and Electrification",
+    "Climate Policy and Sustainable Finance",
+    "Circular Economy and Life-Cycle Assessment",
+    "Renewable Energy Systems and Deployment"
+  ],
+  "schedule": [],
+  "scheduleNotes": [],
+  "speakerGroups": [],
+  "guidelines": [],
+  "faqs": [],
+  "pricing": {
+    "currency": "USD",
+    "tiers": [
+      {
+        "id": "earlybird",
+        "label": "Earlybird Registration",
+        "endsOn": "2026-09-30"
+      },
+      {
+        "id": "second",
+        "label": "Second Term Registration",
+        "endsOn": "2026-10-31"
+      },
+      { "id": "final", "label": "Final Registration", "endsOn": "2026-11-10" }
+    ],
+    "categories": [
+      {
+        "id": "oral",
+        "label": "Oral/Keynote/Plenary/Poster Presentation",
+        "prices": { "earlybird": 199, "second": 299, "final": 399 }
+      },
+      {
+        "id": "student-oral",
+        "label": "Student Oral/Poster Presentation",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "recorded",
+        "label": "Recorded Video Presentation",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "workshop",
+        "label": "Workshop",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "delegate",
+        "label": "Delegate",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "group",
+        "label": "Group Registration (Participants - 3 to 5 Members)",
+        "prices": { "earlybird": 500, "second": 600, "final": 700 }
+      },
+      {
+        "id": "group-student",
+        "label": "Group Registration (Students - 3 to 5 Members)",
+        "prices": { "earlybird": 300, "second": 400, "final": 500 }
+      }
+    ]
+  }
+}

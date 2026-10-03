@@ -15,7 +15,12 @@ const esc = (value) =>
 const parseDate = (iso) => new Date(`${iso}T00:00:00Z`);
 
 const longDate = (iso) =>
-  parseDate(iso).toLocaleDateString("en-US", { timeZone: "UTC", year: "numeric", month: "long", day: "numeric" });
+  parseDate(iso).toLocaleDateString("en-US", {
+    timeZone: "UTC",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 
 const ordinal = (n) => {
   const rem = n % 100;
@@ -25,12 +30,16 @@ const ordinal = (n) => {
 
 const ordinalDate = (iso) => {
   const d = parseDate(iso);
-  const month = d.toLocaleDateString("en-US", { timeZone: "UTC", month: "long" });
+  const month = d.toLocaleDateString("en-US", {
+    timeZone: "UTC",
+    month: "long",
+  });
   return `${ordinal(d.getUTCDate())} ${month}, ${d.getUTCFullYear()}`;
 };
 
 const CURRENCY_SYMBOL = { USD: "$", EUR: "â‚¬" };
-const money = (amount, currency) => `${CURRENCY_SYMBOL[currency] ?? ""}${Number(amount).toFixed(2)}`;
+const money = (amount, currency) =>
+  `${CURRENCY_SYMBOL[currency] ?? ""}${Number(amount).toFixed(2)}`;
 
 /** Escapes text, then turns [label](url) and bare e-mail addresses into links. `@abstractTemplate` resolves to the site-wide template URL. */
 const linkify = (text, site) =>
@@ -38,7 +47,8 @@ const linkify = (text, site) =>
     /\[([^\]]+)\]\(([^)]+)\)|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g,
     (_, label, url, email) => {
       if (email) return `<a href="mailto:${email}">${email}</a>`;
-      const href = url === "@abstractTemplate" ? site.abstractTemplateUrl || "#" : url;
+      const href =
+        url === "@abstractTemplate" ? site.abstractTemplateUrl || "#" : url;
       return `<a href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
     },
   );
@@ -65,10 +75,22 @@ const AUTOCOMPLETE = {
 };
 
 /** One labelled form control. `col` is the width in a 12-column grid. */
-const field = ({ prefix, name, label, col, type = "text", required = true, placeholder = "", options = "", extra = "" }) => {
+const field = ({
+  prefix,
+  name,
+  label,
+  col,
+  type = "text",
+  required = true,
+  placeholder = "",
+  options = "",
+  extra = "",
+}) => {
   const id = `${prefix}-${name}`;
   const common = `id="${id}" name="${name}" class="form-control"${required ? " required" : ""}`;
-  const auto = AUTOCOMPLETE[name] ? ` autocomplete="${AUTOCOMPLETE[name]}"` : "";
+  const auto = AUTOCOMPLETE[name]
+    ? ` autocomplete="${AUTOCOMPLETE[name]}"`
+    : "";
   let control;
   if (type === "select") {
     control = `<select ${common}${auto}><option value="">Select</option>${options}</select>`;
@@ -81,7 +103,8 @@ const field = ({ prefix, name, label, col, type = "text", required = true, place
   return `<div class="form-group col-${col}"><label for="${id}">${label}${star}</label>${control}${extra}</div>`;
 };
 
-const counter = (prefix) => `<span class="char-count" data-count-for="${prefix}-address">0/1000</span>`;
+const counter = (prefix) =>
+  `<span class="char-count" data-count-for="${prefix}-address">0/1000</span>`;
 
 const modalShell = ({ id, title, intro = "", wide = false, body }) => `
     <div class="modal" id="modal-${id}" role="dialog" aria-modal="true" aria-labelledby="modal-${id}-title" aria-hidden="true">
@@ -106,7 +129,11 @@ const header = () => `
     <header class="site-header" id="header">
       <div class="container header-container">
         <a href="/" class="logo" id="logoLink">
-          <div class="logo-icon"><i data-lucide="globe"></i></div>
+          <img
+            src="../assets/images/logo_Inno.png"
+            alt=""
+            class="logo-icon home-logo-image"
+          />
           <span>Innotive Conferences</span>
         </a>
 
@@ -143,7 +170,7 @@ const hero = ({ conf, up }) => `
 
         <div class="container">
           <div class="hero-content-wrapper reveal-up">
-            <span class="badge badge-glass-white hero-badge"><i data-lucide="calendar-days"></i> ${esc(longDate(conf.date))}</span>
+              <span class="badge badge-glass-white hero-badge"><i data-lucide="calendar-days"></i> <span data-event-date>${esc(longDate(conf.date))}</span></span>
             <h1 class="hero-heading">${esc(conf.name)} <span class="text-gradient-accent">(${esc(conf.shortName)})</span></h1>
             <p class="hero-desc">${esc(conf.theme)}</p>
             <ul class="conf-hero-meta">
@@ -193,12 +220,14 @@ const schedule = ({ conf }) => `
           <div class="section-header reveal-up">
             <span class="badge badge-glass-primary">Program</span>
             <h2>Event Schedule</h2>
-            <p>${esc(longDate(conf.date))} Â· ${esc(conf.mode)} Â· ${esc(conf.timeNote)}</p>
+            <p><span data-event-date>${esc(longDate(conf.date))}</span> Â· ${esc(conf.mode)} Â· ${esc(conf.timeNote)}</p>
           </div>
           <ol class="sched-list">
             ${conf.schedule
               .map(
-                (slot) => `<li class="sched-item reveal-up${slot.type === "break" ? " sched-break" : ""}">
+                (
+                  slot,
+                ) => `<li class="sched-item reveal-up${slot.type === "break" ? " sched-break" : ""}">
               <div class="sched-time"><i data-lucide="clock"></i> ${esc(scheduleTime(slot, conf.timezoneLabel))}</div>
               <div class="sched-card">
                 <h3>${esc(slot.title)}</h3>
@@ -305,7 +334,7 @@ const cta = ({ conf }) => `
       <section class="conf-cta-section">
         <div class="container">
           <div class="cta-box reveal-scale">
-            <h2>Join ${esc(conf.shortName)} on ${esc(longDate(conf.date))}</h2>
+            <h2>Join ${esc(conf.shortName)} on <span data-event-date>${esc(longDate(conf.date))}</span></h2>
             <p>Register today, submit your abstract, or download the brochure to learn more.</p>
             <div class="hero-actions conf-actions">${heroActions()}
             </div>
@@ -410,10 +439,6 @@ const registerModal = ({ conf, site, formBits }) => {
     title: `Register for ${esc(conf.shortName)}`,
     wide: true,
     body: `
-        <div class="modal-notice">
-          <i data-lucide="info"></i>
-          <span>If you encounter any challenges during the registration process, kindly reach out to the email address provided below. <a href="mailto:${esc(conf.supportEmail)}">${esc(conf.supportEmail)}</a></span>
-        </div>
         <form class="conf-form" id="form-register" data-form="register" novalidate>
           <div class="form-grid">
             ${field({ prefix: "rg", name: "title", label: "Title", col: 3, type: "select", options: formBits.titleOptions })}
@@ -448,20 +473,32 @@ const registerModal = ({ conf, site, formBits }) => {
           </div>
         </form>
 
-        <div class="reg-info">
-          <div>
+        ${
+          conf.benefits?.length || conf.cancellationPolicy?.length
+            ? `<div class="reg-info">
+          ${
+            conf.benefits?.length
+              ? `<div>
             <h4>Benefits of Joining Webinar :</h4>
             <ul class="check-list">
               ${conf.benefits.map((b) => `<li>${esc(b)}</li>`).join("\n              ")}
             </ul>
-          </div>
-          <div>
+          </div>`
+              : ""
+          }
+          ${
+            conf.cancellationPolicy?.length
+              ? `<div>
             <h4>Cancellation Policy :</h4>
             <ul class="check-list">
               ${conf.cancellationPolicy.map((c) => `<li>${esc(c)}</li>`).join("\n              ")}
             </ul>
-          </div>
-        </div>`,
+          </div>`
+              : ""
+          }
+        </div>`
+            : ""
+        }`,
   });
 };
 
@@ -483,8 +520,12 @@ export function renderConference({ conf, site, countries, footer }) {
   const up = "../"; // pages are written to conferences/<slug>.html
   const pageUrl = `${site.siteUrl}/conferences/${conf.slug}.html`;
   const formBits = {
-    titleOptions: site.titles.map((t) => `<option value="${esc(t)}">${esc(t)}</option>`).join(""),
-    countryOptions: countries.map((c) => `<option value="${esc(c)}">${esc(c)}</option>`).join(""),
+    titleOptions: site.titles
+      .map((t) => `<option value="${esc(t)}">${esc(t)}</option>`)
+      .join(""),
+    countryOptions: countries
+      .map((c) => `<option value="${esc(c)}">${esc(c)}</option>`)
+      .join(""),
   };
 
   // Only what the browser needs. `<` is escaped so the JSON can never close its <script> tag.
@@ -533,13 +574,13 @@ export function renderConference({ conf, site, countries, footer }) {
   <body class="conference-page">${header()}
 
     <main>${hero({ conf, up })}
-${about({ conf, up })}
-${sessions({ conf })}
-${schedule({ conf })}
-${speakers({ conf, up })}
-${guidelines({ conf })}
-${faqs({ conf, site })}
-${cta({ conf })}
+  ${about({ conf, up })}
+  ${conf.topics?.length ? sessions({ conf }) : ""}
+  ${conf.schedule?.length ? schedule({ conf }) : ""}
+  ${conf.speakerGroups?.length ? speakers({ conf, up }) : ""}
+  ${conf.guidelines?.length ? guidelines({ conf }) : ""}
+  ${conf.faqs?.length ? faqs({ conf, site }) : ""}
+  ${cta({ conf })}
     </main>
 
     ${footer}

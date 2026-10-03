@@ -16,7 +16,7 @@ There is no reCAPTCHA. The endpoint is a public URL, so anyone who finds it can 
 
 ## 1. Google Drive: direct download links
 
-The **brochure** and the **abstract template** are files in your Drive. A normal share link opens a preview page; a *direct download link* starts the download.
+The **brochure** and the **abstract template** are files in your Drive. A normal share link opens a preview page; a _direct download link_ starts the download.
 
 1. In Drive, right-click the file → **Share** → **General access** → **Anyone with the link** (role **Viewer**) → **Copy link**. It looks like
    `https://drive.google.com/file/d/`**`FILE_ID`**`/view?usp=sharing`
@@ -42,21 +42,27 @@ The **brochure** and the **abstract template** are files in your Drive. A normal
 3. **Script**: in the Sheet choose **Extensions → Apps Script**. Delete the sample code, paste all of `apps-script/Code.gs`, save.
 4. **Script Properties**: ⚙ **Project Settings → Script Properties → Add script property**:
 
-   | Property | Value |
-   |---|---|
-   | `SHEET_ID` | the Sheet id from step 1 |
-   | `ABSTRACT_FOLDER_ID` | the folder id from step 2 |
-   | `BROCHURE_FILE_ID_ICPH2026` | `12tC-61KIYmourmH6Gf1AeqJQPKLmfWVV` (the brochure `FILE_ID` from section 1) |
-   | `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | from section 3 (only needed for Register) |
+   | Property                                  | Value                                                                                       |
+   | ----------------------------------------- | ------------------------------------------------------------------------------------------- |
+   | `SHEET_ID`                                | the Sheet id from step 1                                                                    |
+   | `ABSTRACT_FOLDER_ID`                      | the folder id from step 2                                                                   |
+   | `BROCHURE_FILE_ID_ICPH2026`               | `12tC-61KIYmourmH6Gf1AeqJQPKLmfWVV` (legacy seed; `setup()` copies it into Summit Settings) |
+   | `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | from section 3 (only needed for Register)                                                   |
 
-5. Run **`setup`** once (select `setup` in the toolbar → **Run**) and accept the permission prompts. Check the Sheet now has the three tabs.
+5. Run **`setup`** once (select `setup` in the toolbar → **Run**) and accept the permission prompts. Check the Sheet now has the brochure, abstract, registration, and `Summit Settings` tabs.
 6. Run **`installTriggers`** once. It adds a 30-minute check that marks payments as Paid even if a visitor closes the tab before returning to the site.
-7. **Deploy → New deployment → type: Web app** → *Execute as*: **Me**, *Who has access*: **Anyone** → **Deploy**. Copy the **Web app URL** (ends in `/exec`).
+7. **Deploy → New deployment → type: Web app** → _Execute as_: **Me**, _Who has access_: **Anyone** → **Deploy**. Copy the **Web app URL** (ends in `/exec`).
 8. Put that URL in `data/site.json` under `apiEndpoints`, then commit and push. GitHub Actions rebuilds the site.
-   Each form has its own entry (`brochure`, `abstract`, `register`), so the forms can use separate Apps Script projects or all point at one combined script (paste the same URL in each).
+   Set `brochure`, `abstract`, `register`, `verify`, and `summitDates` to the appropriate web app URLs. The payment actions and date feed can share one URL.
 9. After **any later change** to `Code.gs`: **Deploy → Manage deployments → ✏ → Version: New version → Deploy** (the URL stays the same).
 
 Quick check: open the `/exec` URL in a browser. You should see `{"status":"ok", ...}`.
+
+### Admin-managed summit dates
+
+The `Summit Settings` tab is the admin control panel for event dates. Share the Google Sheet only with trusted admins. The public website can read the dates through the `summitDates` action, but that endpoint does not allow edits and returns no registration data.
+
+Each row contains a conference ID, `Event Date (YYYY-MM-DD)`, optional `Next Event Date (YYYY-MM-DD)`, and `Brochure File ID`. `setup()` seeds existing brochure IDs from Script Properties when available. For a new or changed brochure, copy its file ID from the Drive URL into the summit's `Brochure File ID` cell. Edit the date cells here too; do not edit the JSON or Apps Script for routine date or brochure changes. The homepage cards, summit detail pages, and brochure forms read these settings when loaded/submitted, so updates do not require a rebuild or redeployment. Leave the next-event date blank until it is scheduled.
 
 ## 3. Razorpay dynamic payment link
 
@@ -64,10 +70,10 @@ How it works: the visitor picks what they want and clicks **Enroll Now**. Apps S
 
 1. Razorpay Dashboard → switch to **Test Mode** (top of the dashboard) while you try things.
 2. **Account & Settings → API Keys → Generate Test Key**. Copy the **Key Id** and **Key Secret** (the secret is shown once). Save them as Script Properties `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET`. Never put them in GitHub or in `data/site.json`.
-3. Test it: on the page click **Register Now**, fill the form, pick a type, **Enroll Now**. Pay with a Razorpay test card (see Razorpay's *Test Cards* docs). You should return to the site with "Registration confirmed", and the Sheet row shows `Paid` with the payment id.
+3. Test it: on the page click **Register Now**, fill the form, pick a type, **Enroll Now**. Pay with a Razorpay test card (see Razorpay's _Test Cards_ docs). You should return to the site with "Registration confirmed", and the Sheet row shows `Paid` with the payment id.
 4. **Going live** (needed to take real money):
    - Complete Razorpay **KYC / account activation**.
-   - Prices are in **USD**, and your account is Indian, so also request **International Payments** (Dashboard → Account & Settings → *International payments* / *Payment methods*). Without it USD payments are declined.
+   - Prices are in **USD**, and your account is Indian, so also request **International Payments** (Dashboard → Account & Settings → _International payments_ / _Payment methods_). Without it USD payments are declined.
    - Generate **Live** keys and replace the two Script Properties. Delete `TEST_TODAY` if set.
    - Redeploy the web app (section 2, step 9).
 5. Links expire after 24 hours (`PAYMENT_LINK_HOURS` in `Code.gs`), so an old Early-bird link cannot be paid after the rate changes.

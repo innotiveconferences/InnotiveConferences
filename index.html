@@ -47,13 +47,18 @@
     <script src="js/animations.js" type="module" defer></script>
     <script src="js/carousel.js" type="module" defer></script>
     <script src="js/contact.js" type="module" defer></script>
+    <script src="js/home-conferences.js" type="module" defer></script>
   </head>
   <body>
     <!-- 1. Sticky Header -->
     <header class="site-header" id="header">
       <div class="container header-container">
         <a href="#" class="logo" id="logoLink">
-          <div class="logo-icon"><i data-lucide="globe"></i></div>
+          <img
+            src="assets/images/logo_Inno.png"
+            alt=""
+            class="logo-icon home-logo-image"
+          />
           <span>Innotive Conferences</span>
         </a>
 
@@ -68,13 +73,13 @@
             <!-- <li><a href="#speakers" class="nav-link">Speakers</a></li> -->
             <li><a href="#conferences" class="nav-link">Conferences</a></li>
             <!-- <li><a href="#testimonials" class="nav-link">Testimonials</a></li> -->
-            <li><a href="#contact" class="nav-link">Contact</a></li>
+            <li><a href="#services" class="nav-link">Services</a></li>
           </ul>
         </nav>
 
         <div class="nav-actions">
           <a href="#contact" class="btn btn-primary" id="headerCtaBtn"
-            >Register Now</a
+            >Contact Us</a
           >
           <button
             class="menu-toggle"
@@ -109,7 +114,7 @@
           <div
             class="hero-slide"
             style="
-              background-image: url(&quot;assets/images/hero_finance.png&quot;);
+              background-image: url(&quot;assets/images/conf_cancer.png&quot;);
             "
           ></div>
         </div>
@@ -617,7 +622,7 @@
 
           <div class="grid-3" id="conferencesGrid">
             <!-- Conference 1 -->
-            <article class="conf-card reveal-up delay-100">
+            <article class="conf-card reveal-up delay-100" data-conference-card="icai2026">
               <div class="conf-banner-wrapper">
                 <img
                   src="assets/images/hero_ai.png"
@@ -625,17 +630,18 @@
                   class="conf-banner"
                 />
                 <span class="badge badge-glass-primary conf-category"
-                  >Artificial Intelligence</span
+                  ></span
                 >
               </div>
               <div class="conf-body">
                 <h3 class="conf-title">Artificial Intelligence Summit</h3>
                 <div class="conf-meta">
                   <div class="conf-meta-item">
-                    <i data-lucide="calendar"></i> <span>Oct 12-14, 2026</span>
+                    <i data-lucide="calendar"></i> <span data-event-date></span>
                   </div>
                   <div class="conf-meta-item">
-                    <i data-lucide="map-pin"></i> <span>San Francisco, CA</span>
+                    <i data-lucide="video"></i>
+                    <span>Online via Zoom</span>
                   </div>
                 </div>
                 <p class="conf-desc">
@@ -644,15 +650,19 @@
                   experts.
                 </p>
                 <div class="conf-footer">
-                  <a href="#contact" class="btn btn-primary conf-btn"
+                  <a
+                    href="conferences/icai2026.html"
+                    class="btn btn-primary conf-btn"
+                    data-event-action="icai2026"
                     >Register for Summit</a
                   >
+
                 </div>
               </div>
             </article>
 
             <!-- Conference 2 -->
-            <article class="conf-card reveal-up delay-200">
+            <article class="conf-card reveal-up delay-200" data-conference-card="icph2026">
               <div class="conf-banner-wrapper">
                 <img
                   src="assets/images/hero_health.png"
@@ -666,16 +676,16 @@
                     color: var(--accent);
                     border-color: rgba(20, 184, 166, 0.2);
                   "
-                  >Public Health</span
+                  ></span
                 >
               </div>
               <div class="conf-body">
                 <h3 class="conf-title">
-                  International Conference on Public Health (ICPH2026)
+                  Public Health Summit
                 </h3>
                 <div class="conf-meta">
                   <div class="conf-meta-item">
-                    <i data-lucide="calendar"></i> <span>Oct 14, 2026</span>
+                    <i data-lucide="calendar"></i> <span data-event-date></span>
                   </div>
                   <div class="conf-meta-item">
                     <i data-lucide="video"></i>
@@ -683,15 +693,15 @@
                   </div>
                 </div>
                 <p class="conf-desc">
-                  Advancing Public Health Through Innovation, Equity, and
-                  Global Collaboration. Leading experts, researchers, and
-                  practitioners share research across 28 scientific session
-                  topics.
+                  Advancing Public Health Through Innovation, Equity, and Global
+                  Collaboration. Leading experts, researchers, and practitioners
+                  share research across 28 scientific session topics.
                 </p>
                 <div class="conf-footer">
                   <a
                     href="conferences/icph2026.html"
                     class="btn btn-primary conf-btn"
+                    data-event-action
                     >Register for Summit</a
                   >
                 </div>
@@ -699,46 +709,50 @@
             </article>
 
             <!-- Conference 3 -->
-            <article class="conf-card reveal-up delay-300">
+            <article class="conf-card reveal-up delay-300" data-conference-card="iccan2026">
               <div class="conf-banner-wrapper">
                 <img
-                  src="assets/images/hero_finance.png"
+                  src="assets/images/conf_cancer.png"
                   alt="Finance Summit Banner"
                   class="conf-banner"
                 />
                 <span class="badge badge-glass-primary conf-category"
-                  >Finance</span
+                  ></span
                 >
               </div>
               <div class="conf-body">
-                <h3 class="conf-title">Future of Finance</h3>
+                <h3 class="conf-title">Cancer Summit</h3>
                 <div class="conf-meta">
                   <div class="conf-meta-item">
-                    <i data-lucide="calendar"></i> <span>Dec 01-03, 2026</span>
+                    <i data-lucide="calendar"></i> <span data-event-date></span>
                   </div>
                   <div class="conf-meta-item">
-                    <i data-lucide="map-pin"></i>
-                    <span>London, United Kingdom</span>
+                    <i data-lucide="video"></i>
+                    <span>Online via Zoom</span>
                   </div>
                 </div>
                 <p class="conf-desc">
-                  Unpack blockchain cross-border settlements, digital treasury
-                  assets, quantum algorithmic trading, and ESG funding
-                  regulations.
+                  Explore the latest advances in cancer research, precision oncology,
+                  early detection, innovative treatments, immunotherapy, and personalized
+                  patient care with leading experts and healthcare professionals.
                 </p>
                 <div class="conf-footer">
-                  <a href="#contact" class="btn btn-primary conf-btn"
+                  <a
+                    href="conferences/iccan2026.html"
+                    class="btn btn-primary conf-btn"
+                    data-event-action
                     >Register for Summit</a
                   >
                 </div>
+
               </div>
             </article>
 
             <!-- Conference 4 -->
-            <article class="conf-card reveal-up delay-100">
+            <article class="conf-card reveal-up delay-100" data-conference-card="icid2026">
               <div class="conf-banner-wrapper">
                 <img
-                  src="assets/images/conf_climate.png"
+                  src="assets/images/conf_infec.png"
                   alt="Climate Summit Banner"
                   class="conf-banner"
                 />
@@ -749,73 +763,95 @@
                     color: var(--accent);
                     border-color: rgba(20, 184, 166, 0.2);
                   "
-                  >Climate</span
+                  ></span
                 >
               </div>
               <div class="conf-body">
-                <h3 class="conf-title">Climate Leadership Conference</h3>
-                <div class="conf-meta">
-                  <div class="conf-meta-item">
-                    <i data-lucide="calendar"></i> <span>Jan 18-20, 2027</span>
-                  </div>
-                  <div class="conf-meta-item">
-                    <i data-lucide="map-pin"></i> <span>Tokyo, Japan</span>
-                  </div>
-                </div>
-                <p class="conf-desc">
-                  Laying the plans for next-decade global decarbonization.
-                  Covering solar cell advancements, wind arrays, and
-                  eco-friendly concrete.
-                </p>
-                <div class="conf-footer">
-                  <a href="#contact" class="btn btn-primary conf-btn"
-                    >Register for Summit</a
-                  >
-                </div>
-              </div>
+  <h3 class="conf-title">Infectious Diseases Summit</h3>
+
+  <div class="conf-meta">
+    <div class="conf-meta-item">
+      <i data-lucide="calendar"></i>
+      <span data-event-date></span>
+    </div>
+
+    <div class="conf-meta-item">
+      <i data-lucide="video"></i>
+      <span>Online via Zoom</span>
+    </div>
+  </div> <!-- CLOSE conf-meta HERE -->
+
+  <p class="conf-desc">
+    Explore the latest developments in infectious disease research,
+    emerging pathogens, antimicrobial resistance, vaccines, outbreak
+    prevention, and innovative approaches to global disease control
+    with experts and healthcare professionals.
+  </p>
+
+  <div class="conf-footer">
+    <a
+      href="conferences/icid2026.html"
+      class="btn btn-primary conf-btn"
+      data-event-action
+    >
+      Register for Summit
+    </a>
+  </div>
+
+</div> <!-- CLOSE conf-body HERE -->
             </article>
 
             <!-- Conference 5 -->
-            <article class="conf-card reveal-up delay-200">
+            <article class="conf-card reveal-up delay-200" data-conference-card="iccm2026">
               <div class="conf-banner-wrapper">
                 <img
-                  src="assets/images/conf_cyber.png"
+                  src="assets/images/conf_card.png"
                   alt="Cybersecurity Banner"
                   class="conf-banner"
                 />
                 <span class="badge badge-glass-primary conf-category"
-                  >Cybersecurity</span
+                  ></span
                 >
               </div>
               <div class="conf-body">
-                <h3 class="conf-title">Cybersecurity Forum</h3>
-                <div class="conf-meta">
-                  <div class="conf-meta-item">
-                    <i data-lucide="calendar"></i> <span>Feb 10-12, 2027</span>
-                  </div>
-                  <div class="conf-meta-item">
-                    <i data-lucide="map-pin"></i>
-                    <span>Frankfurt, Germany</span>
-                  </div>
-                </div>
-                <p class="conf-desc">
-                  Defending critical power grids and database clusters.
-                  Zero-trust validation, ransomware defense models, and cloud
-                  sovereignty audits.
-                </p>
-                <div class="conf-footer">
-                  <a href="#contact" class="btn btn-primary conf-btn"
-                    >Register for Summit</a
-                  >
-                </div>
-              </div>
+  <h3 class="conf-title">Cardivascular Medicine Summit</h3>
+
+  <div class="conf-meta">
+    <div class="conf-meta-item">
+      <i data-lucide="calendar"></i>
+      <span data-event-date></span>
+    </div>
+
+    <div class="conf-meta-item">
+      <i data-lucide="video"></i>
+      <span>Online via Zoom</span>
+    </div>
+  </div> <!-- CLOSE conf-meta HERE -->
+
+  <p class="conf-desc">
+    Explore advances in cardiovascular medicine, including heart disease
+    prevention, innovative diagnostic techniques, interventional cardiology,
+    cardiac imaging, and emerging approaches to cardiovascular treatment
+    with leading healthcare professionals and researchers.
+  </p>
+
+  <div class="conf-footer">
+    <a
+      href="conferences/iccm2026.html"
+      class="btn btn-primary conf-btn"
+      data-event-action
+    >
+      Register for Summit
+    </a>
+  </div>
+</div> <!-- CLOSE conf-body HERE -->
             </article>
 
             <!-- Conference 6 -->
-            <article class="conf-card reveal-up delay-300">
+            <article class="conf-card reveal-up delay-300" data-conference-card="icre2026">
               <div class="conf-banner-wrapper">
                 <img
-                  src="assets/images/conf_edu.png"
+                  src="assets/images/conf_renew.png"
                   alt="Education Banner"
                   class="conf-banner"
                 />
@@ -826,36 +862,117 @@
                     color: var(--accent);
                     border-color: rgba(20, 184, 166, 0.2);
                   "
-                  >Education</span
+                  ></span
                 >
               </div>
-              <div class="conf-body">
-                <h3 class="conf-title">Global Education Summit</h3>
-                <div class="conf-meta">
-                  <div class="conf-meta-item">
-                    <i data-lucide="calendar"></i> <span>Mar 22-24, 2027</span>
-                  </div>
-                  <div class="conf-meta-item">
-                    <i data-lucide="map-pin"></i> <span>Toronto, Canada</span>
-                  </div>
-                </div>
-                <p class="conf-desc">
-                  Reconstructing educational accessibility. Adaptive curricula
-                  metrics, hybrid virtual lecture halls, and decentralized
-                  classrooms.
-                </p>
-                <div class="conf-footer">
-                  <a href="#contact" class="btn btn-primary conf-btn"
-                    >Register for Summit</a
-                  >
-                </div>
+             <div class="conf-body">
+  <h3 class="conf-title">Renewal Energy Summit</h3>
+
+  <div class="conf-meta">
+    <div class="conf-meta-item">
+      <i data-lucide="calendar"></i>
+      <span data-event-date></span>
+    </div>
+
+    <div class="conf-meta-item">
+      <i data-lucide="video"></i>
+      <span>Online via Zoom</span>
+    </div>
+  </div>
+
+  <p class="conf-desc">
+    Explore the latest innovations in renewable energy, including solar
+    power, wind energy, energy storage, smart grids, green hydrogen, and
+    sustainable technologies shaping the future of clean energy.
+  </p>
+
+  <div class="conf-footer">
+    <a
+      href="conferences/icre2026.html"
+      class="btn btn-primary conf-btn"
+      data-event-action
+    >
+      Register for Summit
+    </a>
+  </div>
+</div>
+
               </div>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- 6. Why Attend Section -->
+      <!-- Services Section -->
+      <section class="section-dark" id="services">
+        <div class="container">
+          <div class="section-header reveal-up">
+            <span class="badge badge-glass-accent">What We Do</span>
+            <h2>Services</h2>
+            <p>
+              Practical support for conference organizers, presenters, and delegates
+              from the first planning steps through the event itself.
+            </p>
+          </div>
+
+          <div class="why-grid">
+            <article class="why-card reveal-up delay-100">
+              <div class="why-icon-box"><i data-lucide="calendar-check"></i></div>
+              <h3>Conference Planning</h3>
+              <p>
+                Coordinate event timelines, formats, program details, and the
+                planning tasks that bring an international summit together.
+              </p>
+            </article>
+            <article class="why-card reveal-up delay-200">
+              <div class="why-icon-box"><i data-lucide="mic-2"></i></div>
+              <h3>Scientific Program Coordination</h3>
+              <p>
+                Organize presentation tracks and session information so
+                researchers and professionals can share work with their field.
+              </p>
+            </article>
+            <article class="why-card reveal-up delay-300">
+              <div class="why-icon-box"><i data-lucide="file-up"></i></div>
+              <h3>Abstract Submissions</h3>
+              <p>
+                Provide submission guidance, templates, and an online process
+                for presenters to send their abstracts for consideration.
+              </p>
+            </article>
+            <article class="why-card reveal-up delay-100">
+              <div class="why-icon-box"><i data-lucide="credit-card"></i></div>
+              <h3>Registration Support</h3>
+              <p>
+                Help delegates select a registration category, submit their
+                details, and complete payment through hosted checkout.
+              </p>
+            </article>
+            <article class="why-card reveal-up delay-200">
+              <div class="why-icon-box"><i data-lucide="video"></i></div>
+              <h3>Online Event Delivery</h3>
+              <p>
+                Deliver online summits with clear schedules, joining guidance,
+                and information presenters and attendees need to participate.
+              </p>
+            </article>
+            <article class="why-card reveal-up delay-300">
+              <div class="why-icon-box"><i data-lucide="messages-square"></i></div>
+              <h3>Presenter and Delegate Support</h3>
+              <p>
+                Share presentation guidelines and event updates, and provide a
+                point of contact for questions before the summit.
+              </p>
+            </article>
+          </div>
+
+          <div class="hero-actions" style="justify-content: center; margin: 40px 0 0">
+            <a href="#contact" class="btn btn-primary">Discuss Your Event</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Attend Section -->
       <section class="section-dark" id="why-attend">
         <div class="container">
           <div class="section-header reveal-up">
@@ -1387,7 +1504,8 @@
             <span class="badge badge-glass-primary">Contact</span>
             <h2>Get In Touch</h2>
             <p>
-              Have questions or need assistance? Fill out the form below and our team will get back to you shortly.
+              Have questions or need assistance? Fill out the form below and our
+              team will get back to you shortly.
             </p>
           </div>
 
@@ -1478,7 +1596,9 @@
                     />
                   </div>
                   <div class="form-group">
-                    <label for="organizationName">Organization / University</label>
+                    <label for="organizationName"
+                      >Organization / University</label
+                    >
                     <input
                       type="text"
                       id="organizationName"
@@ -1491,9 +1611,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="formMessage"
-                    >Query / Message</label
-                  >
+                  <label for="formMessage">Query / Message</label>
                   <textarea
                     id="formMessage"
                     name="message"
@@ -1558,130 +1676,17 @@
           <!-- Col 1: Brand -->
           <div class="footer-brand">
             <a href="#" class="logo">
-              <div class="logo-icon"><i data-lucide="globe"></i></div>
+              <img
+                src="assets/images/logo_Inno.png"
+                alt=""
+                class="logo-icon home-logo-image"
+              />
               <span>Innotive Conferences</span>
             </a>
             <p>
               Laying down the infrastructure for academic knowledge transfer and
               executive cooperation across various global industries.
             </p>
-            <div class="social-links">
-              <a
-                href="https://www.instagram.com/innotiveconferences/"
-                class="social-icon"
-                aria-label="innotiveconferences Instagram"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <rect
-                    x="3"
-                    y="3"
-                    width="18"
-                    height="18"
-                    rx="5"
-                    ry="5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  ></rect>
-                  <circle
-                    cx="12"
-                    cy="12"
-                    r="4.2"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  ></circle>
-                  <circle
-                    cx="17.35"
-                    cy="6.65"
-                    r="1.1"
-                    fill="currentColor"
-                  ></circle>
-                </svg>
-              </a>
-              <a
-                href="https://www.facebook.com/profile.php?id=61591944296175"
-                class="social-icon"
-                aria-label="innotiveconferences facebook"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path
-                    d="M13.5 20v-7.5H16l.45-3H13.5V4.8c0-.9.25-1.5 1.5-1.5h1.6V.8C16.1.7 15.2.7 14.2.7c-2.2 0-3.7 1.3-3.7 3.8V9.5H8v3h2.5V20h3Z"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </a>
-              <a
-                href="https://in.linkedin.com/in/innotive-conferences-6b2636421"
-                class="social-icon"
-                aria-label="innotiveconferences LinkedIn"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path
-                    d="M6.94 8.5a1.56 1.56 0 1 0 0-3.12 1.56 1.56 0 0 0 0 3.12ZM5.5 9.75h2.88V19H5.5V9.75Zm4.6 0h2.76v1.25h.04c.38-.72 1.33-1.48 2.74-1.48 2.93 0 3.46 1.93 3.46 4.44V19h-2.88v-8.2c0-1.95-.03-4.46-2.72-4.46-2.72 0-3.13 2.12-3.13 4.33V19H10.1V9.75Z"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </a>
-
-              <a
-                href="https://www.youtube.com/@InnotiveConferences"
-                class="social-icon"
-                aria-label="innotiveconferences youtube"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <rect
-                    x="3"
-                    y="5"
-                    width="18"
-                    height="14"
-                    rx="3"
-                    ry="3"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                  ></rect>
-                  <path
-                    d="m10.5 9 5 3-5 3V9Z"
-                    fill="currentColor"
-                    stroke="currentColor"
-                    stroke-width="1.2"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </a>
-              <a
-                href="https://x.com/innotiveConf"
-                class="social-icon"
-                aria-label="innotiveconferences twitter"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path
-                    d="M18.5 4H21l-6.4 7.3L22 20h-5.7l-4.4-5.8L7.1 20H4.8l6.9-7.9L2 4h5.8l4 5.2L18.5 4Z"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                    stroke-linejoin="round"
-                  ></path>
-                </svg>
-              </a>
-            </div>
           </div>
 
           <!-- Col 2: Company -->
@@ -1716,15 +1721,39 @@
             </ul>
           </div>
 
-          <!-- Col 4: Quick Links -->
+          <!-- Col 4: Social media -->
           <div>
-            <h4 class="footer-title">Quick Links</h4>
-            <ul class="footer-links">
-              <li>
-                <a href="#contact" class="footer-link">Registrar Office</a>
-              </li>
-              <li><a href="#about" class="footer-link">FAQs & Support</a></li>
-            </ul>
+            <h4 class="footer-title">Follow Us</h4>
+            <div class="social-links">
+              <a href="https://www.instagram.com/innotiveconferences/" class="social-icon" aria-label="Innotive Conferences on Instagram" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <rect x="3" y="3" width="18" height="18" rx="5" ry="5" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+                  <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+                  <circle cx="17.35" cy="6.65" r="1.1" fill="currentColor"></circle>
+                </svg>
+              </a>
+              <a href="https://www.facebook.com/profile.php?id=61591944296175" class="social-icon" aria-label="Innotive Conferences on Facebook" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M13.5 20v-7.5H16l.45-3H13.5V4.8c0-.9.25-1.5 1.5-1.5h1.6V.8C16.1.7 15.2.7 14.2.7c-2.2 0-3.7 1.3-3.7 3.8V9.5H8v3h2.5V20h3Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path>
+                </svg>
+              </a>
+              <a href="https://in.linkedin.com/in/innotive-conferences-6b2636421" class="social-icon" aria-label="Innotive Conferences on LinkedIn" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6.94 8.5a1.56 1.56 0 1 0 0-3.12 1.56 1.56 0 0 0 0 3.12ZM5.5 9.75h2.88V19H5.5V9.75Zm4.6 0h2.76v1.25h.04c.38-.72 1.33-1.48 2.74-1.48 2.93 0 3.46 1.93 3.46 4.44V19h-2.88v-8.2c0-1.95-.03-4.46-2.72-4.46-2.72 0-3.13 2.12-3.13 4.33V19H10.1V9.75Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path>
+                </svg>
+              </a>
+              <a href="https://www.youtube.com/@InnotiveConferences" class="social-icon" aria-label="Innotive Conferences on YouTube" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <rect x="3" y="5" width="18" height="14" rx="3" ry="3" fill="none" stroke="currentColor" stroke-width="1.8"></rect>
+                  <path d="m10.5 9 5 3-5 3V9Z" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"></path>
+                </svg>
+              </a>
+              <a href="https://x.com/innotiveConf" class="social-icon" aria-label="Innotive Conferences on X" target="_blank" rel="noopener noreferrer">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M18.5 4H21l-6.4 7.3L22 20h-5.7l-4.4-5.8L7.1 20H4.8l6.9-7.9L2 4h5.8l4 5.2L18.5 4Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"></path>
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -1771,13 +1800,13 @@
         <div class="success-icon"><i data-lucide="check-circle-2"></i></div>
         <h3>Contact Request Submitted</h3>
         <p>
-          Thank you for contacting us. Our team will review your request and get back to you soon.
+          Thank you for contacting us. Our team will review your request and get
+          back to you soon.
         </p>
         <button class="btn btn-primary" style="width: 100%" id="closeModalBtn">
           Return to Website
         </button>
       </div>
     </div>
-
   </body>
 </html>

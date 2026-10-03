@@ -1,0 +1,95 @@
+{
+  "id": "iccan2026",
+  "slug": "iccan2026",
+  "shortName": "ICCAN2026",
+  "name": "Cancer Summit",
+  "theme": "Progress in cancer science, prevention, and patient-centered care",
+  "date": "2026-10-14",
+  "mode": "Online via Zoom",
+  "timeDisplay": "10:00 AM – 01:35 PM (GMT)",
+  "timezoneLabel": "GMT",
+  "timeNote": "UK timings",
+  "supportEmail": "public-health@innotiveconferences.com",
+  "registrationOpens": "2026-07-31",
+  "brochureUrl": "",
+  "heroImage": "assets/images/conf_cancer.png",
+  "aboutImage": "assets/images/placeholder-about.svg",
+  "seo": {
+    "title": "ICCAN2026 | Cancer Summit | Innotive Conferences",
+    "description": "Cancer Summit (ICCAN2026), October 14, 2026. Exchange research on cancer science, prevention, and patient-centered care. Register online."
+  },
+  "about": [
+    "The Cancer Summit brings together researchers, clinicians, and healthcare professionals to share current perspectives on cancer science and care.",
+    "Topics span prevention, early detection, translational research, treatment approaches, clinical practice, and support for people affected by cancer."
+  ],
+  "topics": [
+    "Cancer Biology and Translational Research",
+    "Cancer Prevention and Early Detection",
+    "Precision Oncology and Biomarkers",
+    "Cancer Genomics and Molecular Diagnostics",
+    "Immuno-Oncology",
+    "Clinical Trials and Therapeutics",
+    "Surgical and Radiation Oncology",
+    "Cancer Epidemiology and Public Health",
+    "Supportive Care and Survivorship",
+    "Palliative and Patient-Centered Care"
+  ],
+  "schedule": [],
+  "scheduleNotes": [],
+  "speakerGroups": [],
+  "guidelines": [],
+  "faqs": [],
+  "pricing": {
+    "currency": "USD",
+    "tiers": [
+      {
+        "id": "earlybird",
+        "label": "Earlybird Registration",
+        "endsOn": "2026-09-30"
+      },
+      {
+        "id": "second",
+        "label": "Second Term Registration",
+        "endsOn": "2026-10-31"
+      },
+      { "id": "final", "label": "Final Registration", "endsOn": "2026-11-10" }
+    ],
+    "categories": [
+      {
+        "id": "oral",
+        "label": "Oral/Keynote/Plenary/Poster Presentation",
+        "prices": { "earlybird": 199, "second": 299, "final": 399 }
+      },
+      {
+        "id": "student-oral",
+        "label": "Student Oral/Poster Presentation",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "recorded",
+        "label": "Recorded Video Presentation",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "workshop",
+        "label": "Workshop",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "delegate",
+        "label": "Delegate",
+        "prices": { "earlybird": 99, "second": 199, "final": 299 }
+      },
+      {
+        "id": "group",
+        "label": "Group Registration (Participants - 3 to 5 Members)",
+        "prices": { "earlybird": 500, "second": 600, "final": 700 }
+      },
+      {
+        "id": "group-student",
+        "label": "Group Registration (Students - 3 to 5 Members)",
+        "prices": { "earlybird": 300, "second": 400, "final": 500 }
+      }
+    ]
+  }
+}
