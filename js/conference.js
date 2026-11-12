@@ -12,6 +12,24 @@ import {
   getCachedSummitDates,
 } from "./event-dates.js";
 
+import commonConferenceImage from "../assets/images/Common_Conference_Image.jpg";
+import heroAiImage from "../assets/images/hero_ai.png";
+import heroHealthImage from "../assets/images/hero_health.png";
+import cancerImage from "../assets/images/conf_cancer.png";
+import cardiovascularImage from "../assets/images/conf_card.png";
+import infectiousDiseaseImage from "../assets/images/conf_infec.png";
+import renewableEnergyImage from "../assets/images/conf_renew.png";
+
+const conferenceImageAssets = {
+  "assets/images/Common_Conference_Image.jpg": commonConferenceImage,
+  "assets/images/hero_ai.png": heroAiImage,
+  "assets/images/hero_health.png": heroHealthImage,
+  "assets/images/conf_cancer.png": cancerImage,
+  "assets/images/conf_card.png": cardiovascularImage,
+  "assets/images/conf_infec.png": infectiousDiseaseImage,
+  "assets/images/conf_renew.png": renewableEnergyImage,
+};
+
 /** An error whose message is safe to show to the visitor. */
 class UserError extends Error {}
 
@@ -759,6 +777,8 @@ function conferenceImageUrl(value) {
     image = "assets/images/Common_Conference_Image.jpg";
   }
   if (/^https:\/\//i.test(image)) return new URL(image).href;
+  const assetPath = image.replace(/^\/+/, "");
+  if (conferenceImageAssets[assetPath]) return conferenceImageAssets[assetPath];
   if (image.startsWith("/")) return new URL(image, location.origin).href;
   if (image.startsWith("assets/"))
     return new URL(`../${image}`, location.href).href;
