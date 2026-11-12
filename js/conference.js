@@ -3,7 +3,14 @@
    <script id="conf-data"> JSON written by scripts/templates/conference.mjs. */
 
 import { createValidator } from "./form-validation.js";
-import { fetchSummitDates, formatEventDate } from "./event-dates.js";
+import {
+  fetchConferenceContent,
+  fetchConferencePricing,
+  fetchSummitDates,
+  formatEventDate,
+  getCachedConferenceContent,
+  getCachedSummitDates,
+} from "./event-dates.js";
 
 /** An error whose message is safe to show to the visitor. */
 class UserError extends Error {}
@@ -15,29 +22,73 @@ class UnconfirmedError extends UserError {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const dataEl = document.getElementById("conf-data");
   if (!dataEl) return;
 
   const conf = JSON.parse(dataEl.textContent);
-  fetchSummitDates(conf.id)
-    .then((settings) => {
-      if (!settings) return;
-      if (settings.brochureUrl) conf.brochureUrl = settings.brochureUrl;
-      if (settings.eventDate) {
-        document.querySelectorAll("[data-event-date]").forEach((element) => {
-          element.textContent = formatEventDate(settings.eventDate);
-        });
-      }
+  const cachedContent = getCachedConferenceContent(conf.id);
+  if (cachedContent) {
+    Object.assign(conf, cachedContent);
+    renderConferenceContent(conf);
+  }
+
+  fetchConferenceContent(conf.id)
+    .then((content) => {
+      Object.assign(conf, content);
+      renderConferenceContent(conf);
     })
-    .catch(() => {});
+    .catch((error) => {
+      console.error("Could not load conference content.", error);
+    });
+
+  const renderEventSettings = (settings, updateActions) => {
+    if (settings?.brochureUrl) conf.brochureUrl = settings.brochureUrl;
+
+    const eventDate = settings?.eventDate || conf.date;
+    const nextEventDate = settings
+      ? settings.nextEventDate
+      : conf.nextEventDate;
+    const eventHasPassed = getToday() > eventDate;
+
+    document.querySelectorAll("[data-event-date]").forEach((element) => {
+      element.textContent = eventHasPassed
+        ? nextEventDate
+          ? `Next event: ${formatEventDate(nextEventDate)}`
+          : "Next event date to be announced"
+        : formatEventDate(eventDate);
+    });
+
+    if (updateActions && eventHasPassed) {
+      setNotifyActions(conf, nextEventDate);
+    }
+  };
+
+  const cachedSettings = getCachedSummitDates(conf.id);
+  if (cachedSettings) renderEventSettings(cachedSettings, false);
+  fetchSummitDates(conf.id)
+    .then((settings) => renderEventSettings(settings, true))
+    .catch((error) => {
+      console.error("Could not load summit dates.", error);
+    });
+
+  const pricing = await fetchConferencePricing(conf.id).catch((error) => {
+    console.error("Could not load conference pricing.", error);
+    return null;
+  });
+  if (pricing) {
+    conf.registrationOpens = pricing.registrationOpens;
+    conf.pricing = pricing;
+    renderPricingTable(pricing);
+  }
+
   const modals = initModals();
   const ctx = { conf, modals };
 
   initCharCounters();
   initBrochureForm(ctx);
   initAbstractForm(ctx);
-  initRegisterForm(ctx);
+  initRegisterForm(ctx, Boolean(pricing));
   handlePaymentReturn(ctx);
 
   // Deep links, e.g. conferences/icph2026.html#register
@@ -412,6 +463,491 @@ function getToday() {
   return new Date().toISOString().slice(0, 10);
 }
 
+function setNotifyActions(conf, nextEventDate) {
+  const message = nextEventDate
+    ? `Please notify me about the next ${conf.name} scheduled for ${formatEventDate(nextEventDate)}.`
+    : `Please notify me when the next ${conf.name} is scheduled.`;
+  const notifyUrl = `/?message=${encodeURIComponent(message)}#contact`;
+
+  document.querySelectorAll('[data-modal-open="register"]').forEach((button) => {
+    button.textContent = "Notify Me";
+    button.removeAttribute("data-modal-open");
+    button.addEventListener("click", () => {
+      window.location.assign(notifyUrl);
+    });
+  });
+}
+
+function renderConferenceContent(conf) {
+  const setText = (selector, value) => {
+    document.querySelectorAll(selector).forEach((element) => {
+      element.textContent = value || "";
+    });
+  };
+  const setMeta = (selector, value) => {
+    const element = document.querySelector(selector);
+    if (element && value) element.content = value;
+  };
+  const about = conf.about || [];
+  const topics = conf.topics || [];
+  const schedule = conf.schedule || [];
+  const scheduleNotes = conf.scheduleNotes || [];
+  const speakerGroups = conf.speakerGroups || [];
+  const confirmedSpeakerGroups = speakerGroups
+    .map((group) => ({
+      ...group,
+      members: (group.members || []).filter((member) => {
+        const name = typeof member.name === "string" ? member.name.trim() : "";
+        return (
+          name &&
+          !/^(?:(?:committee\s+)?member|(?:(?:plenary|keynote)\s+)?speaker)\s*\d*$/i.test(
+            name,
+          ) &&
+          !/^(?:tba|tbd|to be announced|will update soon)$/i.test(name)
+        );
+      }),
+    }))
+    .filter((group) => group.members.length > 0);
+  const guidelines = conf.guidelines || [];
+  const faqs = conf.faqs || [];
+  const benefits = conf.benefits || [];
+  const cancellationPolicy = conf.cancellationPolicy || [];
+
+  document.title = conf.seo?.title || document.title;
+  setMeta('meta[name="description"]', conf.seo?.description);
+  setMeta('meta[property="og:title"]', conf.seo?.title);
+  setMeta('meta[property="og:description"]', conf.seo?.description);
+  setMeta('meta[property="og:image"]', conferenceImageUrl(conf.heroImage));
+
+  setText(
+    "[data-conference-page-heading]",
+    conf.displayTitle || `${conf.name} (${conf.shortName})`,
+  );
+  setText("[data-conference-about-short-name]", conf.shortName);
+  setText("[data-conference-speaker-short-name]", conf.shortName);
+  setText("[data-conference-cta-short-name]", conf.shortName);
+  setText("[data-conference-theme]", conf.theme);
+  setText("[data-conference-mode]", conf.mode);
+  setText("[data-conference-time]", conf.timeDisplay);
+  setText("[data-conference-time-note]", conf.timeNote);
+
+  const heroImage = document.querySelector("[data-conference-hero-image]");
+  const heroImageUrl = conferenceImageUrl(conf.heroImage);
+  if (heroImage && heroImageUrl)
+    heroImage.style.backgroundImage = `url("${heroImageUrl}")`;
+  const aboutImage = document.querySelector("[data-conference-about-image]");
+  const aboutImageUrl = conferenceImageUrl(conf.aboutImage);
+  if (aboutImage && aboutImageUrl) {
+    aboutImage.src = aboutImageUrl;
+    aboutImage.alt = `${conf.shortName} conference`;
+  }
+
+  const aboutContent = document.querySelector(
+    "[data-conference-about-content]",
+  );
+  if (aboutContent) {
+    aboutContent.replaceChildren(
+      ...about.map((text) => {
+        const paragraph = document.createElement("p");
+        paragraph.className = "conf-about-text";
+        paragraph.textContent = text;
+        return paragraph;
+      }),
+    );
+  }
+  setContentSection("about", about.length > 0);
+
+  const topicList = document.querySelector("[data-conference-topics]");
+  if (topicList) {
+    topicList.replaceChildren(
+      ...topics.map((text) => {
+        const item = document.createElement("li");
+        item.className = "topic-chip reveal-up reveal-active";
+        item.textContent = text;
+        return item;
+      }),
+    );
+  }
+  setText("[data-conference-topic-count]", String(topics.length));
+  setContentSection("sessions", topics.length > 0);
+
+  const scheduleList = document.querySelector("[data-conference-schedule]");
+  if (scheduleList) {
+    scheduleList.replaceChildren(
+      ...schedule.map((slot) => {
+        const item = document.createElement("li");
+        item.className = `sched-item reveal-up reveal-active${slot.type === "break" ? " sched-break" : ""}`;
+        const time = document.createElement("div");
+        time.className = "sched-time";
+        const icon = document.createElement("i");
+        icon.dataset.lucide = "clock";
+        time.append(icon, document.createTextNode(formatScheduleTime(slot, conf.timezoneLabel)));
+        const card = document.createElement("div");
+        card.className = "sched-card";
+        const title = document.createElement("h3");
+        title.textContent = slot.title || "";
+        card.append(title);
+        if (slot.description) {
+          const description = document.createElement("p");
+          description.textContent = slot.description;
+          card.append(description);
+        }
+        item.append(time, card);
+        return item;
+      }),
+    );
+  }
+  const notesList = document.querySelector(
+    "[data-conference-schedule-notes] ul",
+  );
+  if (notesList) {
+    notesList.replaceChildren(
+      ...scheduleNotes.map((text) => {
+        const item = document.createElement("li");
+        item.textContent = text;
+        return item;
+      }),
+    );
+  }
+  const notesContainer = document.querySelector(
+    "[data-conference-schedule-notes]",
+  );
+  if (notesContainer) notesContainer.hidden = scheduleNotes.length === 0;
+  setContentSection("schedule", schedule.length > 0 || scheduleNotes.length > 0);
+
+  const speakerContainer = document.querySelector(
+    "[data-conference-speaker-groups]",
+  );
+  if (speakerContainer) {
+    const groupElements = confirmedSpeakerGroups.map((group) => {
+      const section = document.createElement("div");
+      section.className = "people-group";
+      section.id = safeElementId(group.id);
+      const heading = document.createElement("h3");
+      heading.className = "people-group-title reveal-up reveal-active";
+      heading.textContent = group.title || "";
+      const people = document.createElement("div");
+      people.className = "people-grid";
+      group.members.forEach((member) => {
+        people.append(createPersonCard(member));
+      });
+      section.append(heading, people);
+      return section;
+    });
+    if (groupElements.length) {
+      speakerContainer.replaceChildren(...groupElements);
+    } else {
+      const notice = document.createElement("p");
+      notice.className = "speakers-update-notice reveal-up reveal-active";
+      notice.setAttribute("role", "status");
+      notice.textContent = "Will update soon";
+      speakerContainer.replaceChildren(notice);
+    }
+  }
+  setContentSection("speakers", true);
+
+  const guidelineContainer = document.querySelector(
+    "[data-conference-guidelines]",
+  );
+  if (guidelineContainer) {
+    guidelineContainer.replaceChildren(
+      ...guidelines.map((guideline) => {
+        const card = document.createElement("article");
+        card.className = "guideline-card reveal-up reveal-active";
+        const heading = document.createElement("h3");
+        heading.textContent = guideline.title || "";
+        const list = document.createElement("ul");
+        list.className = "check-list";
+        (guideline.items || []).forEach((text) => {
+          const item = document.createElement("li");
+          item.textContent = text;
+          list.append(item);
+        });
+        card.append(heading, list);
+        return card;
+      }),
+    );
+  }
+  setContentSection("guidelines", guidelines.length > 0);
+
+  const faqContainer = document.querySelector("[data-conference-faqs]");
+  if (faqContainer) {
+    faqContainer.replaceChildren(
+      ...faqs.map((faq) => createFaqItem(faq, conf)),
+    );
+  }
+  setContentSection("faqs", faqs.length > 0);
+
+  const supportLink = document.querySelector("[data-conference-support]");
+  if (supportLink) {
+    supportLink.textContent = conf.supportEmail || "";
+    supportLink.href = conf.supportEmail
+      ? `mailto:${conf.supportEmail}`
+      : "#";
+  }
+  const registerTitle = document.getElementById("modal-register-title");
+  if (registerTitle) registerTitle.textContent = `Register for ${conf.shortName}`;
+
+  renderListContent("[data-conference-benefits] ul", benefits);
+  renderListContent(
+    "[data-conference-cancellation] ul",
+    cancellationPolicy,
+  );
+  const benefitsBox = document.querySelector("[data-conference-benefits]");
+  const cancellationBox = document.querySelector(
+    "[data-conference-cancellation]",
+  );
+  if (benefitsBox) benefitsBox.hidden = benefits.length === 0;
+  if (cancellationBox)
+    cancellationBox.hidden = cancellationPolicy.length === 0;
+  const policyBox = document.querySelector("[data-conference-policy]");
+  if (policyBox)
+    policyBox.hidden = benefits.length === 0 && cancellationPolicy.length === 0;
+
+  window.lucide?.createIcons();
+}
+
+function setContentSection(name, visible) {
+  const section = document.querySelector(
+    `[data-conference-section="${name}"]`,
+  );
+  if (section) section.hidden = !visible;
+}
+
+function renderListContent(selector, values) {
+  const list = document.querySelector(selector);
+  if (!list) return;
+  list.replaceChildren(
+    ...values.map((text) => {
+      const item = document.createElement("li");
+      item.textContent = text;
+      return item;
+    }),
+  );
+}
+
+function formatScheduleTime(slot, timezoneLabel) {
+  const formatTime = (value, meridiem) => {
+    const text = String(value || "").trim();
+    const match = text.match(/(\d{1,2}):(\d{1,2})(?::\d{2})?/);
+    if (!match) return text;
+
+    let hour = Number(match[1]);
+    const minutes = match[2].padStart(2, "0");
+    const suffix =
+      (text.match(/\b(AM|PM)\b/i) || [])[1] ||
+      meridiem ||
+      (hour > 12 ? "PM" : "");
+    if (hour > 12) hour -= 12;
+    if (hour === 0 && suffix) hour = 12;
+    return `${hour}:${minutes}${suffix ? ` ${suffix.toUpperCase()}` : ""}`;
+  };
+  const startMeridiem = slot.meridiem || slot.endMeridiem;
+  const endMeridiem = slot.endMeridiem || slot.meridiem;
+  return `${formatTime(slot.start, startMeridiem)} – ${formatTime(slot.end, endMeridiem)} (${timezoneLabel})`;
+}
+
+function safeElementId(value) {
+  return String(value || "")
+    .trim()
+    .replace(/[^A-Za-z0-9_-]/g, "-");
+}
+
+function conferenceImageUrl(value) {
+  let image = String(value || "").trim();
+  if (image.endsWith("placeholder-about.svg")) {
+    image = "assets/images/Common_Conference_Image.jpg";
+  }
+  if (/^https:\/\//i.test(image)) return new URL(image).href;
+  if (image.startsWith("/")) return new URL(image, location.origin).href;
+  if (image.startsWith("assets/"))
+    return new URL(`../${image}`, location.href).href;
+  return "";
+}
+
+function createPersonCard(member) {
+  const profileUrl = safeContentLink(member.url);
+  const card = document.createElement(profileUrl ? "a" : "div");
+  card.className = profileUrl
+    ? "person-card person-card--link reveal-up reveal-active"
+    : "person-card reveal-up reveal-active";
+  if (profileUrl) {
+    card.href = profileUrl;
+    card.target = "_blank";
+    card.rel = "noopener noreferrer";
+  }
+
+  const photo = document.createElement("div");
+  photo.className = "person-photo";
+  const image = document.createElement("img");
+  image.src =
+    conferenceImageUrl(member.image) ||
+    new URL("../assets/images/Common_Conference_Image.jpg", location.href).href;
+  image.alt = member.name || "";
+  image.loading = "lazy";
+  photo.append(image);
+
+  const body = document.createElement("div");
+  body.className = "person-body";
+  const name = document.createElement("h4");
+  name.className = "person-name";
+  name.textContent = member.name || "";
+  const role = document.createElement("p");
+  role.className = "person-role";
+  role.textContent = member.role || "";
+  body.append(name, role);
+  if (profileUrl) {
+    const more = document.createElement("span");
+    more.className = "person-more";
+    more.textContent = "View profile ";
+    const icon = document.createElement("i");
+    icon.dataset.lucide = "arrow-up-right";
+    more.append(icon);
+    body.append(more);
+  }
+  card.append(photo, body);
+  return card;
+}
+
+function createFaqItem(faq, conf) {
+  const details = document.createElement("details");
+  details.className = "faq-item reveal-up reveal-active";
+  const question = document.createElement("summary");
+  question.textContent = faq.q || "";
+  const answer = document.createElement("div");
+  answer.className = "faq-answer";
+  if (Array.isArray(faq.a)) {
+    const list = document.createElement("ul");
+    list.className = "check-list";
+    faq.a.forEach((text) => {
+      const item = document.createElement("li");
+      appendFaqLinks(item, text, conf);
+      list.append(item);
+    });
+    answer.append(list);
+  } else {
+    const paragraph = document.createElement("p");
+    appendFaqLinks(paragraph, faq.a || "", conf);
+    answer.append(paragraph);
+  }
+  details.append(question, answer);
+  return details;
+}
+
+function appendFaqLinks(container, text, conf) {
+  const pattern =
+    /\[([^\]]+)\]\(([^)]+)\)|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/g;
+  const source = String(text || "");
+  let cursor = 0;
+  for (const match of source.matchAll(pattern)) {
+    container.append(document.createTextNode(source.slice(cursor, match.index)));
+    const label = match[1] || match[3];
+    const href = match[3]
+      ? `mailto:${match[3]}`
+      : match[2] === "@abstractTemplate"
+        ? conf.abstractTemplateUrl
+        : safeContentLink(match[2]);
+    if (href) {
+      const link = document.createElement("a");
+      link.href = href;
+      link.textContent = label;
+      if (/^https:/i.test(href)) {
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      }
+      container.append(link);
+    } else {
+      container.append(document.createTextNode(match[0]));
+    }
+    cursor = match.index + match[0].length;
+  }
+  container.append(document.createTextNode(source.slice(cursor)));
+}
+
+function safeContentLink(value) {
+  const link = String(value || "").trim();
+  if (!link || link === "@abstractTemplate") return "";
+  try {
+    const url = new URL(link, location.href);
+    return ["https:", "mailto:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+function renderPricingTable(pricing) {
+  const table = document.querySelector("[data-price-table]");
+  const headerRow = table?.tHead?.rows[0];
+  const body = table?.tBodies[0];
+  if (!table || !headerRow || !body) {
+    throw new Error("The registration pricing table is missing.");
+  }
+
+  const specifics = document.createElement("th");
+  specifics.scope = "col";
+  specifics.textContent = "Specifics";
+  headerRow.replaceChildren(specifics);
+
+  const dateFormatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: "UTC",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const currencyFormatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: pricing.currency,
+  });
+
+  pricing.tiers.forEach((tier) => {
+    const heading = document.createElement("th");
+    heading.scope = "col";
+    heading.dataset.tier = tier.id;
+    heading.append(document.createTextNode(tier.label));
+    const deadline = document.createElement("small");
+    deadline.textContent = `on/before ${dateFormatter.format(new Date(`${tier.endsOn}T00:00:00Z`))}`;
+    heading.append(deadline);
+    headerRow.append(heading);
+  });
+
+  body.replaceChildren();
+  pricing.categories.forEach((category) => {
+    const row = document.createElement("tr");
+    row.dataset.category = category.id;
+
+    const labelCell = document.createElement("th");
+    labelCell.scope = "row";
+    const label = document.createElement("label");
+    label.className = "check";
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.name = "categories";
+    checkbox.value = category.id;
+    const labelText = document.createElement("span");
+    labelText.textContent = category.label;
+    label.append(checkbox, labelText);
+    labelCell.append(label);
+    row.append(labelCell);
+
+    pricing.tiers.forEach((tier) => {
+      const cell = document.createElement("td");
+      cell.dataset.tier = tier.id;
+      const dot = document.createElement("span");
+      dot.className = "price-dot";
+      dot.setAttribute("aria-hidden", "true");
+      cell.append(dot, document.createTextNode(currencyFormatter.format(category.prices[tier.id])));
+      row.append(cell);
+    });
+    body.append(row);
+  });
+
+  document.querySelectorAll("[data-pricing-currency]").forEach((element) => {
+    element.textContent = pricing.currency;
+  });
+  table.closest("[data-price-table-wrap]").hidden = false;
+  document.querySelector("[data-price-total-wrap]").hidden = false;
+}
+
 const formatDate = (iso) =>
   new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", {
     timeZone: "UTC",
@@ -420,7 +956,7 @@ const formatDate = (iso) =>
     day: "numeric",
   });
 
-function initRegisterForm({ conf, modals }) {
+function initRegisterForm({ conf, modals }, pricingAvailable) {
   const form = document.getElementById("form-register");
   if (!form) return;
 
@@ -432,6 +968,17 @@ function initRegisterForm({ conf, modals }) {
   const checkboxes = [...form.querySelectorAll('input[name="categories"]')];
   const submitBtn = form.querySelector("[data-submit]");
   const validator = createValidator(form);
+
+  if (!pricingAvailable) {
+    statusEl.textContent = "Pricing is unavailable. Please try again later.";
+    statusEl.classList.add("is-closed");
+    checkboxes.forEach((box) => (box.disabled = true));
+    submitBtn.disabled = true;
+    table.closest("[data-price-table-wrap]").hidden = true;
+    document.querySelector("[data-price-total-wrap]").hidden = true;
+    form.addEventListener("submit", (event) => event.preventDefault());
+    return;
+  }
 
   // Which rate applies today?
   const today = getToday();

@@ -162,7 +162,7 @@ const header = () => `
 const hero = ({ conf, up }) => `
       <section class="hero-section conf-hero" id="home">
         <div class="hero-carousel">
-          <div class="hero-slide active" style="background-image: url(&quot;${up}${esc(conf.heroImage)}&quot;)"></div>
+          <div class="hero-slide active" data-conference-hero-image style="background-image: url(&quot;${up}${esc(conf.heroImage)}&quot;)"></div>
         </div>
         <div class="overlay-dark"></div>
         <div class="floating-shape shape-1 parallax-shape"></div>
@@ -171,12 +171,12 @@ const hero = ({ conf, up }) => `
         <div class="container">
           <div class="hero-content-wrapper reveal-up">
               <span class="badge badge-glass-white hero-badge"><i data-lucide="calendar-days"></i> <span data-event-date>${esc(longDate(conf.date))}</span></span>
-            <h1 class="hero-heading">${esc(conf.name)} <span class="text-gradient-accent">(${esc(conf.shortName)})</span></h1>
-            <p class="hero-desc">${esc(conf.theme)}</p>
+            <h1 class="hero-heading"><span data-conference-page-heading>${esc(conf.displayTitle || `${conf.name} (${conf.shortName})`)}</span></h1>
+            <p class="hero-desc" data-conference-theme>${esc(conf.theme)}</p>
             <ul class="conf-hero-meta">
-              <li><i data-lucide="video"></i> ${esc(conf.mode)}</li>
-              <li><i data-lucide="clock"></i> ${esc(conf.timeDisplay)}</li>
-              <li><i data-lucide="globe"></i> ${esc(conf.timeNote)}</li>
+              <li><i data-lucide="video"></i> <span data-conference-mode>${esc(conf.mode)}</span></li>
+              <li><i data-lucide="clock"></i> <span data-conference-time>${esc(conf.timeDisplay)}</span></li>
+              <li><i data-lucide="globe"></i> <span data-conference-time-note>${esc(conf.timeNote)}</span></li>
             </ul>
             <div class="hero-actions conf-actions">${heroActions()}
             </div>
@@ -185,44 +185,44 @@ const hero = ({ conf, up }) => `
       </section>`;
 
 const about = ({ conf, up }) => `
-      <section id="about" class="about-section">
+      <section id="about" class="about-section" data-conference-section="about"${conf.about?.length ? "" : " hidden"}>
         <div class="container">
           <div class="grid-2">
             <div class="reveal-left">
-              <img src="${up}${esc(conf.aboutImage)}" alt="${esc(conf.shortName)} conference" class="conf-about-img" loading="lazy" />
+              <img src="${up}${esc(conf.aboutImage)}" alt="${esc(conf.shortName)} conference" class="conf-about-img" data-conference-about-image loading="lazy" />
             </div>
             <div class="about-content reveal-right">
               <span class="badge badge-glass-primary">About the Conference</span>
-              <h2 class="conf-heading">About ${esc(conf.shortName)}</h2>
-              ${conf.about.map((p) => `<p class="conf-about-text">${esc(p)}</p>`).join("\n              ")}
+              <h2 class="conf-heading">About <span data-conference-about-short-name>${esc(conf.shortName)}</span></h2>
+              <div data-conference-about-content>${conf.about.map((p) => `<p class="conf-about-text">${esc(p)}</p>`).join("\n              ")}</div>
             </div>
           </div>
         </div>
       </section>`;
 
 const sessions = ({ conf }) => `
-      <section id="sessions" class="section-dark">
+      <section id="sessions" class="section-dark" data-conference-section="sessions"${conf.topics?.length ? "" : " hidden"}>
         <div class="container">
           <div class="section-header reveal-up">
             <span class="badge badge-glass-accent">Topics</span>
             <h2>Scientific Sessions</h2>
-            <p>Submit your research under any of the ${conf.topics.length} scientific session topics below.</p>
+            <p>Submit your research under any of the <span data-conference-topic-count>${conf.topics.length}</span> scientific session topics below.</p>
           </div>
-          <ul class="topic-grid">
+          <ul class="topic-grid" data-conference-topics>
             ${conf.topics.map((t) => `<li class="topic-chip reveal-up">${esc(t)}</li>`).join("\n            ")}
           </ul>
         </div>
       </section>`;
 
 const schedule = ({ conf }) => `
-      <section id="schedule">
+      <section id="schedule" data-conference-section="schedule"${conf.schedule?.length || conf.scheduleNotes?.length ? "" : " hidden"}>
         <div class="container">
           <div class="section-header reveal-up">
             <span class="badge badge-glass-primary">Program</span>
             <h2>Event Schedule</h2>
-            <p><span data-event-date>${esc(longDate(conf.date))}</span> Â· ${esc(conf.mode)} Â· ${esc(conf.timeNote)}</p>
+            <p><span data-event-date>${esc(longDate(conf.date))}</span> Â· <span data-conference-mode>${esc(conf.mode)}</span> Â· <span data-conference-time-note>${esc(conf.timeNote)}</span></p>
           </div>
-          <ol class="sched-list">
+          <ol class="sched-list" data-conference-schedule>
             ${conf.schedule
               .map(
                 (
@@ -237,7 +237,7 @@ const schedule = ({ conf }) => `
               )
               .join("\n            ")}
           </ol>
-          <div class="sched-notes reveal-up">
+          <div class="sched-notes reveal-up" data-conference-schedule-notes${conf.scheduleNotes?.length ? "" : " hidden"}>
             <h4>Note</h4>
             <ul class="check-list">
               ${conf.scheduleNotes.map((n) => `<li>${esc(n)}</li>`).join("\n              ")}
@@ -247,7 +247,7 @@ const schedule = ({ conf }) => `
       </section>`;
 
 const personCard = (member, up) => {
-  const image = `${up}${esc(member.image || "assets/images/placeholder-person.svg")}`;
+  const image = `${up}${esc(member.image || "assets/images/Common_Conference_Image.jpg")}`;
   const inner = `
                 <div class="person-photo"><img src="${image}" alt="${esc(member.name)}" loading="lazy" /></div>
                 <div class="person-body">
@@ -263,35 +263,37 @@ const personCard = (member, up) => {
 };
 
 const speakers = ({ conf, up }) => `
-      <section id="speakers" class="section-dark">
+      <section id="speakers" class="section-dark" data-conference-section="speakers">
         <div class="container">
           <div class="section-header reveal-up">
             <span class="badge badge-glass-accent">Speakers</span>
             <h2>Meet Our Speakers</h2>
-            <p>Leading experts, researchers and practitioners joining ${esc(conf.shortName)}.</p>
+            <p>Leading experts, researchers and practitioners joining <span data-conference-speaker-short-name>${esc(conf.shortName)}</span>.</p>
           </div>
-          ${conf.speakerGroups
-            .map(
-              (group) => `<div class="people-group" id="${esc(group.id)}">
+          <div data-conference-speaker-groups>${conf.speakerGroups?.length
+            ? conf.speakerGroups
+                .map(
+                  (group) => `<div class="people-group" id="${esc(group.id)}">
             <h3 class="people-group-title reveal-up">${esc(group.title)}</h3>
             <div class="people-grid">
               ${group.members.map((m) => personCard(m, up)).join("\n              ")}
             </div>
           </div>`,
-            )
-            .join("\n          ")}
+                )
+                .join("\n          ")
+            : '<p class="speakers-update-notice" role="status">Will update soon</p>'}</div>
         </div>
       </section>`;
 
 const guidelines = ({ conf }) => `
-      <section id="guidelines">
+      <section id="guidelines" data-conference-section="guidelines"${conf.guidelines?.length ? "" : " hidden"}>
         <div class="container">
           <div class="section-header reveal-up">
             <span class="badge badge-glass-primary">Guidelines</span>
             <h2>Presentation Guidelines</h2>
             <p>Please review these before the event to make the most of your session.</p>
           </div>
-          <div class="guideline-grid">
+          <div class="guideline-grid" data-conference-guidelines>
             ${conf.guidelines
               .map(
                 (g) => `<article class="guideline-card reveal-up">
@@ -307,13 +309,13 @@ const guidelines = ({ conf }) => `
       </section>`;
 
 const faqs = ({ conf, site }) => `
-      <section id="faqs" class="section-alt">
+      <section id="faqs" class="section-alt" data-conference-section="faqs"${conf.faqs?.length ? "" : " hidden"}>
         <div class="container">
           <div class="section-header reveal-up">
             <span class="badge badge-glass-accent">FAQs</span>
             <h2>Frequently Asked Questions</h2>
           </div>
-          <div class="faq-list">
+          <div class="faq-list" data-conference-faqs>
             ${conf.faqs
               .map(
                 (f) => `<details class="faq-item reveal-up">
@@ -334,11 +336,11 @@ const cta = ({ conf }) => `
       <section class="conf-cta-section">
         <div class="container">
           <div class="cta-box reveal-scale">
-            <h2>Join ${esc(conf.shortName)} on <span data-event-date>${esc(longDate(conf.date))}</span></h2>
+            <h2>Join <span data-conference-cta-short-name>${esc(conf.shortName)}</span> on <span data-event-date>${esc(longDate(conf.date))}</span></h2>
             <p>Register today, submit your abstract, or download the brochure to learn more.</p>
             <div class="hero-actions conf-actions">${heroActions()}
             </div>
-            <p class="cta-help">Questions? <a href="mailto:${esc(conf.supportEmail)}">${esc(conf.supportEmail)}</a></p>
+            <p class="cta-help">Questions? <a data-conference-support href="mailto:${esc(conf.supportEmail)}">${esc(conf.supportEmail)}</a></p>
           </div>
         </div>
       </section>`;
@@ -413,7 +415,7 @@ const registerModal = ({ conf, site, formBits }) => {
     : "Terms and Conditions";
 
   const table = `
-            <div class="price-table-wrap">
+            <div class="price-table-wrap" data-price-table-wrap hidden>
               <table class="price-table" data-price-table>
                 <thead>
                   <tr>
@@ -456,11 +458,11 @@ const registerModal = ({ conf, site, formBits }) => {
 
           <div class="price-block">
             <div class="price-head">
-              <span>Currency: <strong>${esc(pricing.currency)}</strong></span>
-              <span class="price-status" data-price-status></span>
+              <span>Currency: <strong data-pricing-currency>${esc(pricing.currency)}</strong></span>
+              <span class="price-status" data-price-status>Loading current pricing...</span>
             </div>${table}
             <p class="field-error" data-categories-error hidden>Please select at least one registration type.</p>
-            <div class="price-total">Total Amount = <strong data-total>0.00</strong> ${esc(pricing.currency)}</div>
+            <div class="price-total" data-price-total-wrap hidden>Total Amount = <strong data-total>0.00</strong> <span data-pricing-currency>${esc(pricing.currency)}</span></div>
           </div>
 
           <div class="form-group terms-row">
@@ -473,32 +475,16 @@ const registerModal = ({ conf, site, formBits }) => {
           </div>
         </form>
 
-        ${
-          conf.benefits?.length || conf.cancellationPolicy?.length
-            ? `<div class="reg-info">
-          ${
-            conf.benefits?.length
-              ? `<div>
+        <div class="reg-info" data-conference-policy${conf.benefits?.length || conf.cancellationPolicy?.length ? "" : " hidden"}>
+          <div data-conference-benefits${conf.benefits?.length ? "" : " hidden"}>
             <h4>Benefits of Joining Webinar :</h4>
-            <ul class="check-list">
-              ${conf.benefits.map((b) => `<li>${esc(b)}</li>`).join("\n              ")}
-            </ul>
-          </div>`
-              : ""
-          }
-          ${
-            conf.cancellationPolicy?.length
-              ? `<div>
+            <ul class="check-list">${(conf.benefits || []).map((b) => `<li>${esc(b)}</li>`).join("\n              ")}</ul>
+          </div>
+          <div data-conference-cancellation${conf.cancellationPolicy?.length ? "" : " hidden"}>
             <h4>Cancellation Policy :</h4>
-            <ul class="check-list">
-              ${conf.cancellationPolicy.map((c) => `<li>${esc(c)}</li>`).join("\n              ")}
-            </ul>
-          </div>`
-              : ""
-          }
-        </div>`
-            : ""
-        }`,
+            <ul class="check-list">${(conf.cancellationPolicy || []).map((c) => `<li>${esc(c)}</li>`).join("\n              ")}</ul>
+          </div>
+        </div>`,
   });
 };
 
@@ -534,6 +520,7 @@ export function renderConference({ conf, site, countries, footer }) {
     shortName: conf.shortName,
     supportEmail: conf.supportEmail,
     apiEndpoints: site.apiEndpoints,
+    abstractTemplateUrl: site.abstractTemplateUrl,
     brochureUrl: conf.brochureUrl || "",
     maxAbstractBytes: site.maxAbstractMB * 1024 * 1024,
     registrationOpens: conf.registrationOpens,
@@ -575,11 +562,11 @@ export function renderConference({ conf, site, countries, footer }) {
 
     <main>${hero({ conf, up })}
   ${about({ conf, up })}
-  ${conf.topics?.length ? sessions({ conf }) : ""}
-  ${conf.schedule?.length ? schedule({ conf }) : ""}
-  ${conf.speakerGroups?.length ? speakers({ conf, up }) : ""}
-  ${conf.guidelines?.length ? guidelines({ conf }) : ""}
-  ${conf.faqs?.length ? faqs({ conf, site }) : ""}
+  ${sessions({ conf })}
+  ${schedule({ conf })}
+  ${speakers({ conf, up })}
+  ${guidelines({ conf })}
+  ${faqs({ conf, site })}
   ${cta({ conf })}
     </main>
 

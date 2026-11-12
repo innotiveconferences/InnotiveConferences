@@ -263,6 +263,14 @@
   border-left: 4px solid var(--accent);
 }
 
+.speakers-update-notice {
+  margin: 0;
+  padding: 24px;
+  color: var(--text-light-muted);
+  font-size: 1.1rem;
+  text-align: center;
+}
+
 .people-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -778,6 +786,14 @@ input[type="file"].form-control {
 }
 
 /* ----------------------------------------------------------- price table */
+[data-conference-section][hidden],
+[data-conference-schedule-notes][hidden],
+[data-conference-benefits][hidden],
+[data-conference-cancellation][hidden],
+[data-conference-policy][hidden] {
+  display: none !important;
+}
+
 .price-block {
   margin-top: 28px;
 }
@@ -805,6 +821,11 @@ input[type="file"].form-control {
   overflow-x: auto;
   border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
+}
+
+.price-table-wrap[hidden],
+.price-total[hidden] {
+  display: none;
 }
 
 .price-table {

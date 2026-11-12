@@ -20,8 +20,8 @@
  */
 
 // ---------------------------------------------------------------------------
-// Conference configuration.
-// KEEP IN SYNC with data/conferences/<slug>.json (tiers, deadlines, prices).
+// Static conference metadata and initial pricing values used by setup().
+// Runtime registration pricing is read from the Google Sheet.
 // ---------------------------------------------------------------------------
 const CONFERENCES = {
   icph2026: {
@@ -146,6 +146,48 @@ const SHEET_HEADERS = {
 // Web app entry points
 // ---------------------------------------------------------------------------
 function doGet(e) {
+  if (e && e.parameter && e.parameter.action === "conferenceContent") {
+    try {
+      const id = clean_(e.parameter.conferenceId, 30);
+      if (id && !Object.prototype.hasOwnProperty.call(CONFERENCES, id))
+        fail_("Unknown conference.");
+      const contentResult = id
+        ? { content: { [id]: getConferenceContent_(id) }, errors: {} }
+        : getAllConferenceContent_();
+      return json_(Object.assign({
+        status: "success",
+      }, contentResult));
+    } catch (err) {
+      console.error(err && err.stack ? err.stack : err);
+      return json_({
+        status: "error",
+        message:
+          err instanceof UserError
+            ? err.message
+            : "Conference content is unavailable. Please try again later.",
+      });
+    }
+  }
+  if (e && e.parameter && e.parameter.action === "pricing") {
+    try {
+      const id = clean_(e.parameter.conferenceId, 30);
+      if (!Object.prototype.hasOwnProperty.call(CONFERENCES, id))
+        fail_("Unknown conference.");
+      return json_({
+        status: "success",
+        pricing: publicPricing_(getPricingSettings_(id)),
+      });
+    } catch (err) {
+      console.error(err && err.stack ? err.stack : err);
+      return json_({
+        status: "error",
+        message:
+          err instanceof UserError
+            ? err.message
+            : "Pricing settings are unavailable. Please try again later.",
+      });
+    }
+  }
   if (e && e.parameter && e.parameter.action === "summitDates") {
     return json_(getSummitDates_());
   }
@@ -277,6 +319,7 @@ function handleAbstract_(conf, p) {
 }
 
 function handleRegister_(conf, p) {
+  conf = Object.assign({}, conf, getPricingSettings_(conf.id));
   const person = validatePerson_(p);
   const addr = {
     address1: clean_(p.address1, 120),
@@ -525,6 +568,8 @@ function setup() {
     folder_(conf);
   });
   setupSummitSettings_(ss);
+  setupPricingSettings_(ss);
+  setupConferenceContent_(ss);
   UrlFetchApp.fetch("https://www.google.com/generate_204", {
     muteHttpExceptions: true,
   }); // requests the external-request permission
@@ -597,6 +642,839 @@ function setupSummitSettings_(ss) {
   sheet.setFrozenRows(1);
 }
 
+function setupPricingSettings_(ss) {
+  const settingsSheet = setupManagedSheet_(ss, "Conference Pricing", [
+    "Conference ID",
+    "Registration Opens (YYYY-MM-DD)",
+    "Currency",
+  ]);
+  seedMissingRows_(
+    settingsSheet,
+    Object.keys(CONFERENCES).map(function (id) {
+      const conf = CONFERENCES[id];
+      return [id, conf.registrationOpens, conf.currency];
+    }),
+    function (row) {
+      return clean_(row[0], 30);
+    },
+  );
+
+  const tierSheet = setupManagedSheet_(ss, "Pricing Tiers", [
+    "Conference ID",
+    "Tier ID",
+    "Tier Name",
+    "Ends On (YYYY-MM-DD)",
+  ]);
+  seedMissingRows_(
+    tierSheet,
+    Object.keys(CONFERENCES).reduce(function (rows, id) {
+      CONFERENCES[id].tiers.forEach(function (tier) {
+        rows.push([id, tier.id, tier.label, tier.endsOn]);
+      });
+      return rows;
+    }, []),
+    function (row) {
+      return clean_(row[0], 30) + "|" + clean_(row[1], 30);
+    },
+  );
+
+  const priceSheet = setupManagedSheet_(ss, "Registration Prices", [
+    "Conference ID",
+    "Registration Type ID",
+    "Registration Type",
+    "Earlybird Price",
+    "Second Price",
+    "Final Price",
+  ]);
+  seedMissingRows_(
+    priceSheet,
+    Object.keys(CONFERENCES).reduce(function (rows, id) {
+      Object.keys(CONFERENCES[id].categories).forEach(function (categoryId) {
+        const category = CONFERENCES[id].categories[categoryId];
+        rows.push([
+          id,
+          categoryId,
+          category.label,
+          category.prices.earlybird,
+          category.prices.second,
+          category.prices.final,
+        ]);
+      });
+      return rows;
+    }, []),
+    function (row) {
+      return clean_(row[0], 30) + "|" + clean_(row[1], 60);
+    },
+  );
+}
+
+function setupManagedSheet_(ss, name, headers) {
+  const sheet = ss.getSheetByName(name) || ss.insertSheet(name);
+  sheet
+    .getRange(1, 1, 1, headers.length)
+    .setValues([headers])
+    .setFontWeight("bold")
+    .setBackground("#E2E8F0");
+  sheet.setFrozenRows(1);
+  return sheet;
+}
+
+function seedMissingRows_(sheet, defaults, keyForRow) {
+  const lastRow = sheet.getLastRow();
+  const existingRows =
+    lastRow > 1
+      ? sheet
+          .getRange(2, 1, lastRow - 1, sheet.getLastColumn())
+          .getValues()
+      : [];
+  const existing = Object.create(null);
+  existingRows.forEach(function (row) {
+    const key = keyForRow(row);
+    if (key) existing[key] = true;
+  });
+  const missing = defaults.filter(function (row) {
+    return !existing[keyForRow(row)];
+  });
+  if (missing.length) {
+    sheet
+      .getRange(sheet.getLastRow() + 1, 1, missing.length, missing[0].length)
+      .setValues(missing);
+  }
+}
+
+function setupConferenceContent_(ss) {
+  const detailsSheet = setupManagedSheet_(ss, "Conference Details", [
+    "Conference ID",
+    "Name",
+    "Short Name",
+    "Theme",
+    "Mode",
+    "Time Display",
+    "Timezone Label",
+    "Time Note",
+    "Support Email",
+    "SEO Title",
+    "SEO Description",
+    "Hero Image",
+    "About Image",
+    "Page Heading",
+  ]);
+  const detailDefaults = Object.keys(CONFERENCE_CONTENT_DEFAULTS).map(
+    function (id) {
+      const content = CONFERENCE_CONTENT_DEFAULTS[id];
+      return [
+        id,
+        content.name || "",
+        content.shortName || "",
+        content.theme || "",
+        content.mode || "",
+        content.timeDisplay || "",
+        content.timezoneLabel || "",
+        content.timeNote || "",
+        content.supportEmail || "",
+        (content.seo && content.seo.title) || "",
+        (content.seo && content.seo.description) || "",
+        content.heroImage || "",
+        content.aboutImage || "",
+        content.displayTitle ||
+          (content.name || "") + " (" + (content.shortName || "") + ")",
+      ];
+    },
+  );
+  seedMissingRows_(detailsSheet, detailDefaults, function (row) {
+    return clean_(row[0], 30);
+  });
+  seedMissingPageHeadings_(detailsSheet);
+
+  const aboutTopicsSheet = setupManagedSheet_(ss, "About & Topics", [
+    "Conference ID",
+    "Content Type",
+    "Item Order",
+    "Text",
+  ]);
+  const aboutTopicDefaults = Object.keys(CONFERENCE_CONTENT_DEFAULTS).reduce(
+    function (rows, id) {
+      const content = CONFERENCE_CONTENT_DEFAULTS[id];
+      (content.about || []).forEach(function (text, index) {
+        rows.push([id, "about", index + 1, text]);
+      });
+      (content.topics || []).forEach(function (text, index) {
+        rows.push([id, "topic", index + 1, text]);
+      });
+      return rows;
+    },
+    [],
+  );
+  seedMissingRows_(aboutTopicsSheet, aboutTopicDefaults, function (row) {
+    return [clean_(row[0], 30), clean_(row[1], 20), clean_(row[2], 10)].join("|");
+  });
+
+  const scheduleSheet = setupManagedSheet_(ss, "Schedule", [
+    "Conference ID",
+    "Content Type",
+    "Item Order",
+    "Start",
+    "End",
+    "Meridiem",
+    "End Meridiem",
+    "Title / Note",
+    "Description",
+    "Type",
+  ]);
+  const scheduleDefaults = Object.keys(CONFERENCE_CONTENT_DEFAULTS).reduce(
+    function (rows, id) {
+      const content = CONFERENCE_CONTENT_DEFAULTS[id];
+      (content.schedule || []).forEach(function (slot, index) {
+        rows.push([
+          id,
+          "schedule",
+          index + 1,
+          slot.start || "",
+          slot.end || "",
+          slot.meridiem || "",
+          slot.endMeridiem || "",
+          slot.title || "",
+          slot.description || "",
+          slot.type || "",
+        ]);
+      });
+      (content.scheduleNotes || []).forEach(function (note, index) {
+        rows.push([id, "note", index + 1, "", "", "", "", note, "", ""]);
+      });
+      return rows;
+    },
+    [],
+  );
+  seedMissingRows_(scheduleSheet, scheduleDefaults, function (row) {
+    return [clean_(row[0], 30), clean_(row[1], 20), clean_(row[2], 10)].join("|");
+  });
+
+  const speakersSheet = setupManagedSheet_(ss, "Speakers", [
+    "Conference ID",
+    "Content Type",
+    "Group Order",
+    "Group ID",
+    "Group Title",
+    "Speaker Order",
+    "Name",
+    "Role / Affiliation",
+    "Image URL",
+    "Profile URL",
+  ]);
+  const speakerDefaults = Object.keys(CONFERENCE_CONTENT_DEFAULTS).reduce(
+    function (rows, id) {
+      (CONFERENCE_CONTENT_DEFAULTS[id].speakerGroups || []).forEach(
+        function (group, groupIndex) {
+          rows.push([
+            id,
+            "group",
+            groupIndex + 1,
+            group.id,
+            group.title,
+            "",
+            "",
+            "",
+            "",
+            "",
+          ]);
+          (group.members || []).forEach(function (member, memberIndex) {
+            rows.push([
+              id,
+              "speaker",
+              groupIndex + 1,
+              group.id,
+              "",
+              memberIndex + 1,
+              member.name || "",
+              member.role || "",
+              member.image || "",
+              member.url || "",
+            ]);
+          });
+        },
+      );
+      return rows;
+    },
+    [],
+  );
+  seedMissingRows_(speakersSheet, speakerDefaults, function (row) {
+    return [
+      clean_(row[0], 30),
+      clean_(row[1], 20),
+      clean_(row[3], 80),
+      clean_(row[5], 10),
+    ].join("|");
+  });
+
+  const guidelinesFaqsSheet = setupManagedSheet_(ss, "Guidelines & FAQs", [
+    "Conference ID",
+    "Content Type",
+    "Group Order",
+    "Group ID",
+    "Group Title",
+    "Item Order",
+    "Title / Question",
+    "Text / Answer",
+    "Format",
+  ]);
+  const guidelinesFaqsDefaults = Object.keys(CONFERENCE_CONTENT_DEFAULTS).reduce(
+    function (rows, id) {
+      const content = CONFERENCE_CONTENT_DEFAULTS[id];
+      (content.guidelines || []).forEach(function (group, groupIndex) {
+        const groupId = "guideline-" + (groupIndex + 1);
+        rows.push([
+          id,
+          "guidelineGroup",
+          groupIndex + 1,
+          groupId,
+          group.title,
+          "",
+          "",
+          "",
+          "",
+        ]);
+        (group.items || []).forEach(function (text, itemIndex) {
+          rows.push([
+            id,
+            "guideline",
+            groupIndex + 1,
+            groupId,
+            "",
+            itemIndex + 1,
+            "",
+            text,
+            "",
+          ]);
+        });
+      });
+      (content.faqs || []).forEach(function (faq, index) {
+        rows.push([
+          id,
+          "faq",
+          "",
+          "",
+          "",
+          index + 1,
+          faq.q,
+          Array.isArray(faq.a) ? faq.a.join("\n") : faq.a,
+          Array.isArray(faq.a) ? "list" : "text",
+        ]);
+      });
+      return rows;
+    },
+    [],
+  );
+  seedMissingRows_(guidelinesFaqsSheet, guidelinesFaqsDefaults, function (row) {
+    return [
+      clean_(row[0], 30),
+      clean_(row[1], 20),
+      clean_(row[3], 80),
+      clean_(row[5], 10),
+    ].join("|");
+  });
+
+  const benefitsSheet = setupManagedSheet_(ss, "Benefits & Policies", [
+    "Conference ID",
+    "Content Type",
+    "Item Order",
+    "Text",
+  ]);
+  const benefitDefaults = Object.keys(CONFERENCE_CONTENT_DEFAULTS).reduce(
+    function (rows, id) {
+      const content = CONFERENCE_CONTENT_DEFAULTS[id];
+      (content.benefits || []).forEach(function (text, index) {
+        rows.push([id, "benefit", index + 1, text]);
+      });
+      (content.cancellationPolicy || []).forEach(function (text, index) {
+        rows.push([id, "policy", index + 1, text]);
+      });
+      return rows;
+    },
+    [],
+  );
+  seedMissingRows_(benefitsSheet, benefitDefaults, function (row) {
+    return [clean_(row[0], 30), clean_(row[1], 20), clean_(row[2], 10)].join("|");
+  });
+  clearConferenceContentCache_();
+}
+
+function seedMissingPageHeadings_(sheet) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return;
+
+  const defaultHeadings = Object.create(null);
+  Object.keys(CONFERENCE_CONTENT_DEFAULTS).forEach(function (id) {
+    const content = CONFERENCE_CONTENT_DEFAULTS[id];
+    defaultHeadings[id] =
+      content.displayTitle ||
+      (content.name || "") + " (" + (content.shortName || "") + ")";
+  });
+  const rows = sheet.getRange(2, 1, lastRow - 1, 14).getValues();
+  sheet
+    .getRange(2, 14, rows.length, 1)
+    .setValues(
+      rows.map(function (row) {
+        return [
+          clean_(row[13], 250) ||
+            defaultHeadings[clean_(row[0], 30)] ||
+            "",
+        ];
+      }),
+    );
+}
+
+function conferenceContentCacheKey_(id) {
+  return "conferenceContent:v2:" + id;
+}
+
+function clearConferenceContentCache_() {
+  const cache = CacheService.getScriptCache();
+  Object.keys(CONFERENCES).forEach(function (id) {
+    cache.remove(conferenceContentCacheKey_(id));
+  });
+}
+
+function refreshConferenceContentCache_(e) {
+  if (!e || !e.range) return;
+
+  const sheet = e.range.getSheet();
+  const contentTabs = [
+    "Conference Details",
+    "About & Topics",
+    "Schedule",
+    "Speakers",
+    "Guidelines & FAQs",
+    "Benefits & Policies",
+  ];
+  if (contentTabs.indexOf(sheet.getName()) === -1) return;
+
+  clearConferenceContentCache_();
+  const firstRow = Math.max(2, e.range.getRow());
+  const lastRow = e.range.getLastRow();
+  const editedConferences = Object.create(null);
+  for (let row = firstRow; row <= lastRow; row += 1) {
+    const id = clean_(sheet.getRange(row, 1).getValue(), 30);
+    if (Object.prototype.hasOwnProperty.call(CONFERENCES, id)) {
+      editedConferences[id] = true;
+    }
+  }
+  Object.keys(editedConferences).forEach(function (id) {
+    getConferenceContent_(id, e.source);
+  });
+}
+
+function getConferenceContent_(id, spreadsheet) {
+  const cache = CacheService.getScriptCache();
+  const cacheKey = conferenceContentCacheKey_(id);
+  const cached = cache.get(cacheKey);
+  if (cached) return JSON.parse(cached);
+
+  const ss = spreadsheet || SpreadsheetApp.openById(prop_("SHEET_ID"));
+  const detailsRows = contentSheetRows_(ss, "Conference Details", [
+    "Conference ID",
+    "Name",
+    "Short Name",
+    "Theme",
+    "Mode",
+    "Time Display",
+    "Timezone Label",
+    "Time Note",
+    "Support Email",
+    "SEO Title",
+    "SEO Description",
+    "Hero Image",
+    "About Image",
+    "Page Heading",
+  ], true).filter(function (row) {
+    return clean_(row[0], 30) === id;
+  });
+  if (detailsRows.length !== 1)
+    fail_("Conference details for " + id + " must have exactly one row.");
+  const row = detailsRows[0];
+  const content = {
+    name: clean_(row[1], 160),
+    shortName: clean_(row[2], 40),
+    theme: clean_(row[3], 500),
+    mode: clean_(row[4], 100),
+    timeDisplay: clean_(row[5], 100),
+    timezoneLabel: clean_(row[6], 40),
+    timeNote: clean_(row[7], 100),
+    supportEmail: clean_(row[8], 254),
+    seo: {
+      title: clean_(row[9], 200),
+      description: clean_(row[10], 500),
+    },
+    heroImage: clean_(row[11], 500),
+    aboutImage: clean_(row[12], 500),
+    displayTitle:
+      clean_(row[13], 250) ||
+      clean_(row[1], 160) + " (" + clean_(row[2], 40) + ")",
+    about: [],
+    topics: [],
+    schedule: [],
+    scheduleNotes: [],
+    speakerGroups: [],
+    guidelines: [],
+    faqs: [],
+    benefits: [],
+    cancellationPolicy: [],
+  };
+  if (!content.name || !content.shortName)
+    fail_("Conference name and short name are required for " + id + ".");
+
+  const aboutTopicRows = contentSheetRows_(ss, "About & Topics", [
+    "Conference ID",
+    "Content Type",
+    "Item Order",
+    "Text",
+  ]).filter(function (item) {
+    return clean_(item[0], 30) === id;
+  });
+  const ordered = function (rows, index) {
+    return rows.slice().sort(function (a, b) {
+      return Number(a[index] || 0) - Number(b[index] || 0);
+    });
+  };
+  const rowsOfType = function (rows, type, typeIndex) {
+    return rows.filter(function (item) {
+      return clean_(item[typeIndex], 30) === type;
+    });
+  };
+  content.about = ordered(
+    rowsOfType(aboutTopicRows, "about", 1),
+    2,
+  ).map(function (item) {
+    return clean_(item[3], 5000);
+  });
+  content.topics = ordered(
+    rowsOfType(aboutTopicRows, "topic", 1),
+    2,
+  ).map(function (item) {
+    return clean_(item[3], 500);
+  });
+
+  const scheduleRows = contentSheetRows_(ss, "Schedule", [
+    "Conference ID",
+    "Content Type",
+    "Item Order",
+    "Start",
+    "End",
+    "Meridiem",
+    "End Meridiem",
+    "Title / Note",
+    "Description",
+    "Type",
+  ], true).filter(function (item) {
+    return clean_(item[0], 30) === id;
+  });
+  content.schedule = ordered(
+    rowsOfType(scheduleRows, "schedule", 1),
+    2,
+  ).map(function (item) {
+    return {
+      start: clean_(item[3], 20),
+      end: clean_(item[4], 20),
+      meridiem: clean_(item[5], 10),
+      endMeridiem: clean_(item[6], 10),
+      title: clean_(item[7], 200),
+      description: clean_(item[8], 2000),
+      type: clean_(item[9], 30),
+    };
+  });
+  content.scheduleNotes = ordered(rowsOfType(scheduleRows, "note", 1), 2).map(
+    function (item) {
+      return clean_(item[7], 2000);
+    },
+  );
+
+  const speakerRows = contentSheetRows_(ss, "Speakers", [
+    "Conference ID",
+    "Content Type",
+    "Group Order",
+    "Group ID",
+    "Group Title",
+    "Speaker Order",
+    "Name",
+    "Role / Affiliation",
+    "Image URL",
+    "Profile URL",
+  ]).filter(function (item) {
+    return clean_(item[0], 30) === id;
+  });
+  content.speakerGroups = ordered(
+    rowsOfType(speakerRows, "group", 1),
+    2,
+  ).map(function (group) {
+    const groupId = clean_(group[3], 80);
+    return {
+      id: groupId,
+      title: clean_(group[4], 120),
+      members: ordered(rowsOfType(speakerRows, "speaker", 1), 5)
+        .filter(function (member) {
+          return (
+            clean_(member[3], 80) === groupId &&
+            clean_(member[5], 10)
+          );
+        })
+        .map(function (member) {
+          return {
+            name: clean_(member[6], 120),
+            role: clean_(member[7], 200),
+            image: clean_(member[8], 500),
+            url: clean_(member[9], 500),
+          };
+        }),
+    };
+  });
+
+  const guidelineFaqRows = contentSheetRows_(ss, "Guidelines & FAQs", [
+    "Conference ID",
+    "Content Type",
+    "Group Order",
+    "Group ID",
+    "Group Title",
+    "Item Order",
+    "Title / Question",
+    "Text / Answer",
+    "Format",
+  ]).filter(function (item) {
+    return clean_(item[0], 30) === id;
+  });
+  content.guidelines = ordered(
+    rowsOfType(guidelineFaqRows, "guidelineGroup", 1),
+    2,
+  ).map(function (group) {
+    const groupId = clean_(group[3], 80);
+    return {
+      title: clean_(group[4], 160),
+      items: ordered(
+        rowsOfType(guidelineFaqRows, "guideline", 1),
+        5,
+      )
+        .filter(function (item) {
+          return clean_(item[3], 80) === groupId && clean_(item[5], 10);
+        })
+        .map(function (item) {
+          return clean_(item[7], 2000);
+        }),
+    };
+  });
+  content.faqs = ordered(
+    rowsOfType(guidelineFaqRows, "faq", 1),
+    5,
+  ).map(function (item) {
+    const answer = clean_(item[7], 5000);
+    return {
+      q: clean_(item[6], 500),
+      a:
+        clean_(item[8], 20) === "list"
+          ? answer.split(/\r?\n/).filter(String)
+          : answer,
+    };
+  });
+
+  const benefitRows = contentSheetRows_(ss, "Benefits & Policies", [
+    "Conference ID",
+    "Content Type",
+    "Item Order",
+    "Text",
+  ]).filter(function (item) {
+    return clean_(item[0], 30) === id;
+  });
+  content.benefits = ordered(
+    rowsOfType(benefitRows, "benefit", 1),
+    2,
+  ).map(function (item) {
+    return clean_(item[3], 2000);
+  });
+  content.cancellationPolicy = ordered(
+    rowsOfType(benefitRows, "policy", 1),
+    2,
+  ).map(function (item) {
+    return clean_(item[3], 2000);
+  });
+
+  cache.put(cacheKey, JSON.stringify(content), 300);
+  return content;
+}
+
+function getAllConferenceContent_() {
+  const content = {};
+  const errors = {};
+  Object.keys(CONFERENCES).forEach(function (id) {
+    try {
+      content[id] = getConferenceContent_(id);
+    } catch (err) {
+      errors[id] =
+        err instanceof UserError
+          ? err.message
+          : "Conference content is unavailable.";
+      console.error(err && err.stack ? err.stack : err);
+    }
+  });
+  return { content: content, errors: errors };
+}
+
+function contentSheetRows_(ss, name, headers, useDisplayValues) {
+  const sheet = ss.getSheetByName(name);
+  if (!sheet)
+    fail_('Content tab "' + name + '" not found. Run setup() first.');
+  const actualHeaders = sheet
+    .getRange(1, 1, 1, headers.length)
+    .getValues()[0]
+    .map(function (value) {
+      return String(value).trim();
+    });
+  if (
+    headers.some(function (header, index) {
+      return actualHeaders[index] !== header;
+    })
+  ) {
+    fail_('Content tab "' + name + '" has incorrect headers. Run setup() again.');
+  }
+  const lastRow = sheet.getLastRow();
+  if (lastRow <= 1) return [];
+  const rows = sheet.getRange(2, 1, lastRow - 1, headers.length);
+  return useDisplayValues ? rows.getDisplayValues() : rows.getValues();
+}
+
+function getPricingSettings_(requestedId) {
+  const ss = SpreadsheetApp.openById(prop_("SHEET_ID"));
+  const timezone = ss.getSpreadsheetTimeZone() || "UTC";
+  const settingsRows = pricingSheetRows_(ss, "Conference Pricing", [
+    "Conference ID",
+    "Registration Opens (YYYY-MM-DD)",
+    "Currency",
+  ]);
+  const tierRows = pricingSheetRows_(ss, "Pricing Tiers", [
+    "Conference ID",
+    "Tier ID",
+    "Tier Name",
+    "Ends On (YYYY-MM-DD)",
+  ]);
+  const priceRows = pricingSheetRows_(ss, "Registration Prices", [
+    "Conference ID",
+    "Registration Type ID",
+    "Registration Type",
+    "Earlybird Price",
+    "Second Price",
+    "Final Price",
+  ]);
+  const ids = requestedId ? [requestedId] : Object.keys(CONFERENCES);
+  const result = {};
+
+  ids.forEach(function (id) {
+    const defaults = CONFERENCES[id];
+    const settings = settingsRows.filter(function (row) {
+      return clean_(row[0], 30) === id;
+    });
+    if (settings.length !== 1)
+      fail_("Pricing settings for " + id + " must have exactly one conference row.");
+
+    const registrationOpens = summitDateValue_(settings[0][1], timezone);
+    if (!registrationOpens)
+      fail_("Registration opening date is invalid for " + id + ".");
+    const currency = clean_(settings[0][2], 3).toUpperCase();
+    if (!/^[A-Z]{3}$/.test(currency))
+      fail_("Currency must be a three-letter code for " + id + ".");
+
+    const conferenceTiers = tierRows.filter(function (row) {
+      return clean_(row[0], 30) === id;
+    });
+    const tiersById = {};
+    conferenceTiers.forEach(function (row) {
+      const tierId = clean_(row[1], 30);
+      if (!defaults.tiers.some(function (tier) { return tier.id === tierId; }))
+        fail_("Unknown pricing tier for " + id + ": " + tierId + ".");
+      if (tiersById[tierId]) fail_("Duplicate pricing tier for " + id + ".");
+      const label = clean_(row[2], 80);
+      const endsOn = summitDateValue_(row[3], timezone);
+      if (!label || !endsOn)
+        fail_("Pricing tier name or end date is missing for " + id + ".");
+      tiersById[tierId] = { id: tierId, label: label, endsOn: endsOn };
+    });
+    const tiers = defaults.tiers.map(function (tier) {
+      const configured = tiersById[tier.id];
+      if (!configured) fail_("Pricing tier " + tier.id + " is missing for " + id + ".");
+      return configured;
+    });
+    tiers.forEach(function (tier, index) {
+      if (tier.endsOn < registrationOpens)
+        fail_("Pricing tier end date is before registration opens for " + id + ".");
+      if (index && tier.endsOn < tiers[index - 1].endsOn)
+        fail_("Pricing tier end dates must be in order for " + id + ".");
+    });
+
+    const conferencePrices = priceRows.filter(function (row) {
+      return clean_(row[0], 30) === id;
+    });
+    const categories = {};
+    conferencePrices.forEach(function (row) {
+      const categoryId = clean_(row[1], 60);
+      if (!Object.prototype.hasOwnProperty.call(defaults.categories, categoryId))
+        fail_("Unknown registration type for " + id + ": " + categoryId + ".");
+      if (Object.prototype.hasOwnProperty.call(categories, categoryId))
+        fail_("Duplicate registration type for " + id + ".");
+      const label = clean_(row[2], 120);
+      if (!label) fail_("Registration type name is missing for " + id + ".");
+      const prices = {};
+      tiers.forEach(function (tier, index) {
+        const amount = Number(row[index + 3]);
+        if (!isFinite(amount) || amount <= 0)
+          fail_("Registration price must be greater than zero for " + id + ".");
+        prices[tier.id] = amount;
+      });
+      categories[categoryId] = { label: label, prices: prices };
+    });
+    Object.keys(defaults.categories).forEach(function (categoryId) {
+      if (!Object.prototype.hasOwnProperty.call(categories, categoryId))
+        fail_("Registration type " + categoryId + " is missing for " + id + ".");
+    });
+
+    result[id] = {
+      registrationOpens: registrationOpens,
+      currency: currency,
+      tiers: tiers,
+      categories: categories,
+    };
+  });
+
+  return requestedId ? result[requestedId] : result;
+}
+
+function pricingSheetRows_(ss, name, headers) {
+  const sheet = ss.getSheetByName(name);
+  if (!sheet)
+    fail_('Pricing tab "' + name + '" not found. Run setup() first.');
+  const actualHeaders = sheet
+    .getRange(1, 1, 1, headers.length)
+    .getValues()[0]
+    .map(function (value) {
+      return String(value).trim();
+    });
+  if (headers.some(function (header, index) { return actualHeaders[index] !== header; }))
+    fail_('Pricing tab "' + name + '" has incorrect headers. Run setup() again.');
+  const lastRow = sheet.getLastRow();
+  return lastRow > 1
+    ? sheet.getRange(2, 1, lastRow - 1, headers.length).getValues()
+    : [];
+}
+
+function publicPricing_(pricing) {
+  return {
+    registrationOpens: pricing.registrationOpens,
+    currency: pricing.currency,
+    tiers: pricing.tiers,
+    categories: Object.keys(pricing.categories).map(function (id) {
+      return {
+        id: id,
+        label: pricing.categories[id].label,
+        prices: pricing.categories[id].prices,
+      };
+    }),
+  };
+}
+
 function getSummitDates_() {
   const ss = SpreadsheetApp.openById(prop_("SHEET_ID"));
   const sheet = ss.getSheetByName("Summit Settings");
@@ -659,14 +1537,21 @@ function brochureFileId_(conf) {
 /** Installs the 30-minute reconcile trigger (safe to run more than once). */
 function installTriggers() {
   ScriptApp.getProjectTriggers().forEach(function (t) {
-    if (t.getHandlerFunction() === "reconcilePending")
+    if (
+      t.getHandlerFunction() === "reconcilePending" ||
+      t.getHandlerFunction() === "refreshConferenceContentCache_"
+    )
       ScriptApp.deleteTrigger(t);
   });
   ScriptApp.newTrigger("reconcilePending")
     .timeBased()
     .everyMinutes(30)
     .create();
-  console.log("Trigger installed.");
+  ScriptApp.newTrigger("refreshConferenceContentCache_")
+    .forSpreadsheet(SpreadsheetApp.openById(prop_("SHEET_ID")))
+    .onEdit()
+    .create();
+  console.log("Reconciliation and conference content cache triggers installed.");
 }
 
 // ---------------------------------------------------------------------------

@@ -16,6 +16,12 @@ function initContactForm() {
 
     if (!form) return;
 
+    const initialMessage = new URLSearchParams(window.location.search).get('message');
+    const messageField = form.querySelector('#formMessage');
+    if (initialMessage && messageField) {
+        messageField.value = initialMessage.slice(0, 1000);
+    }
+
     // Paste your deployed Apps Script Web App URL (ends with /exec) here
     const endpoint =
       "https://script.google.com/macros/s/AKfycbxc1M1G9HSZvgLhgQ7QhJ460dg-nIoWUGutqFUQ6UkGvQCJgS21Ly5OsSfZm4kgqbN7/exec";

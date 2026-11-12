@@ -13,13 +13,13 @@
   "registrationOpens": "2026-07-31",
   "brochureUrl": "https://drive.google.com/uc?export=download&id=12tC-61KIYmourmH6Gf1AeqJQPKLmfWVV",
   "heroImage": "assets/images/hero_health.png",
-  "aboutImage": "assets/images/placeholder-about.svg",
+  "aboutImage": "assets/images/Common_Conference_Image.jpg",
   "seo": {
     "title": "ICPH2026 | International Conference on Public Health | Innotive Conferences",
-    "description": "International Conference on Public Health (ICPH2026), October 14, 2026 – Advancing Public Health Through Innovation, Equity, and Global Collaboration. Submit abstracts, download the brochure and register online."
+    "description": "International Conference on Public Health, October 14, 2026 – Advancing Public Health Through Innovation, Equity, and Global Collaboration. Submit abstracts, download the brochure and register online."
   },
   "about": [
-    "The Innotive Conferences welcomes you to the International Conference on Public Health (ICPH2026) scheduled to be held on October 14th, 2026 under the theme Advancing Public Health Through Innovation, Equity, and Global Collaboration.",
+    "The Innotive Conferences welcomes you to the International Conference on Public Health scheduled to be held on October 14th, 2026 under the theme Advancing Public Health Through Innovation, Equity, and Global Collaboration.",
     "Our premier event dedicated to the latest developments in the field of public health is set to bring together leading experts, researchers, and practitioners from around the globe. The influential gathering will serve as a platform for sharing groundbreaking research, discussion on innovative strategies, and addressing challenges in the realm of public health. By providing a dynamic space for professionals, researchers, and thought leaders to converge, our platform plays a pivotal role in shaping the future landscape of medicine, science, and technology.",
     "Our platform actively contributes to the dissemination of cutting-edge research, the integration of novel technologies, and the translation of scientific knowledge into real-world applications for the betterment of society."
   ],
@@ -70,47 +70,7 @@
     "Total speakers: 6–8 (flexible based on availability).",
     "Schedule can be adjusted slightly depending on speaker count."
   ],
-  "speakerGroups": [
-    {
-      "id": "organizing-committee",
-      "title": "Organizing Committee",
-      "members": [
-        { "name": "Committee Member 1", "role": "Title / Affiliation" },
-        { "name": "Committee Member 2", "role": "Title / Affiliation" },
-        { "name": "Committee Member 3", "role": "Title / Affiliation" },
-        { "name": "Committee Member 4", "role": "Title / Affiliation" }
-      ]
-    },
-    {
-      "id": "plenary",
-      "title": "Plenary",
-      "members": [
-        { "name": "Plenary Speaker 1", "role": "Title / Affiliation" },
-        { "name": "Plenary Speaker 2", "role": "Title / Affiliation" }
-      ]
-    },
-    {
-      "id": "keynote",
-      "title": "Keynote",
-      "members": [
-        { "name": "Keynote Speaker 1", "role": "Title / Affiliation" },
-        { "name": "Keynote Speaker 2", "role": "Title / Affiliation" }
-      ]
-    },
-    {
-      "id": "speakers",
-      "title": "Speakers",
-      "members": [
-        { "name": "Speaker 1", "role": "Title / Affiliation" },
-        { "name": "Speaker 2", "role": "Title / Affiliation" },
-        { "name": "Speaker 3", "role": "Title / Affiliation" },
-        { "name": "Speaker 4", "role": "Title / Affiliation" },
-        { "name": "Speaker 5", "role": "Title / Affiliation" },
-        { "name": "Speaker 6", "role": "Title / Affiliation" },
-        { "name": "Speaker 7", "role": "Title / Affiliation" }
-      ]
-    }
-  ],
+  "speakerGroups": [],
   "guidelines": [
     {
       "title": "Oral Presentation Guidelines",
@@ -161,7 +121,7 @@
     },
     {
       "q": "When does registration open?",
-      "a": "Registration for International Conference on Public Health (ICPH2026) opens on 31st July, 2026"
+      "a": "Registration for International Conference on Public Health opens on 31st July, 2026"
     },
     {
       "q": "Where do I go to register for the ICPH2026?",

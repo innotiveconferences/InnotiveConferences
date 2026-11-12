@@ -475,6 +475,7 @@
 
 /* Conferences Cards */
 .conf-card {
+  position: relative;
   background-color: var(--bg-glass-light);
   border: 1px solid var(--border-glass-light);
   border-radius: var(--radius-md);
@@ -561,9 +562,23 @@
 }
 
 .conf-footer {
+  position: relative;
+  z-index: 2;
   border-top: 1px solid var(--border-light);
   padding-top: 20px;
   margin-top: auto;
+}
+
+.conf-card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+.conf-card-link:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
 }
 
 .conf-btn {

@@ -39,7 +39,7 @@ The **brochure** and the **abstract template** are files in your Drive. A normal
    You never edit it by hand; the script creates the tabs (`ICPH2026 Brochure`, `ICPH2026 Abstracts`, `ICPH2026 Registrations`).
    To get an Excel file at any time: **File → Download → Microsoft Excel (.xlsx)**.
 2. **Drive folder**: create a folder `ICPH2026 Abstracts`. Copy its id from the URL (`drive.google.com/drive/folders/`**`FOLDER_ID`**). Uploaded abstracts land here (private to you).
-3. **Script**: in the Sheet choose **Extensions → Apps Script**. Delete the sample code, paste all of `apps-script/Code.gs`, save.
+3. **Script**: in the Sheet choose **Extensions → Apps Script**. Add the contents of both `apps-script/Code.gs` and `apps-script/ConferenceContentDefaults.gs` as separate script files in the same Apps Script project, then save. `Code.gs` uses the conference content defaults to create the content tabs.
 4. **Script Properties**: ⚙ **Project Settings → Script Properties → Add script property**:
 
    | Property                                  | Value                                                                                       |
@@ -49,8 +49,8 @@ The **brochure** and the **abstract template** are files in your Drive. A normal
    | `BROCHURE_FILE_ID_ICPH2026`               | `12tC-61KIYmourmH6Gf1AeqJQPKLmfWVV` (legacy seed; `setup()` copies it into Summit Settings) |
    | `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` | from section 3 (only needed for Register)                                                   |
 
-5. Run **`setup`** once (select `setup` in the toolbar → **Run**) and accept the permission prompts. Check the Sheet now has the brochure, abstract, registration, and `Summit Settings` tabs.
-6. Run **`installTriggers`** once. It adds a 30-minute check that marks payments as Paid even if a visitor closes the tab before returning to the site.
+5. Run **`setup`** once (select `setup` in the toolbar → **Run**) and accept the permission prompts. Check the Sheet now has the brochure, abstract, registration, `Summit Settings`, `Conference Pricing`, `Pricing Tiers`, `Registration Prices`, `Conference Details`, `About & Topics`, `Schedule`, `Speakers`, `Guidelines & FAQs`, and `Benefits & Policies` tabs.
+6. Run **`installTriggers`** once. It adds a 30-minute payment reconciliation check and a Sheet edit trigger that refreshes cached conference content so page updates load faster. Rerun it after changing `Code.gs` to refresh the triggers.
 7. **Deploy → New deployment → type: Web app** → _Execute as_: **Me**, _Who has access_: **Anyone** → **Deploy**. Copy the **Web app URL** (ends in `/exec`).
 8. Put that URL in `data/site.json` under `apiEndpoints`, then commit and push. GitHub Actions rebuilds the site.
    Set `brochure`, `abstract`, `register`, `verify`, and `summitDates` to the appropriate web app URLs. The payment actions and date feed can share one URL.
@@ -82,19 +82,35 @@ Why no Razorpay webhook? Apps Script cannot read HTTP headers, and Razorpay puts
 
 **Without reCAPTCHA:** a bot that finds the `/exec` URL can add junk rows, upload junk files, and, through Register, make Razorpay email payment links to arbitrary addresses. The server validates every field and never trusts the browser's price, but it cannot tell a bot from a person. If you see junk in the Sheet, tell us and we'll add a captcha or a hidden honeypot field back.
 
-## 4. Keeping prices in sync
+## 4. Managing registration pricing
 
-Prices, deadlines and the callback URL exist in two places because the browser shows them and the server enforces them:
+The Sheet is the source of truth for the rates shown on the conference pages and the amounts validated by Apps Script before creating a Razorpay payment link. The `setup()` function creates and seeds three tabs for all six conferences:
 
-- `data/conferences/icph2026.json` → what visitors see
-- `apps-script/Code.gs` → `CONFERENCES.icph2026` → what is charged
+- **Conference Pricing**: one row per conference; edit `Registration Opens` and the three-letter `Currency` code.
+- **Pricing Tiers**: one row per conference and tier; edit `Tier Name` and `Ends On`. The tier IDs (`earlybird`, `second`, and `final`) must stay unchanged.
+- **Registration Prices**: one row per conference and registration type; edit the three price columns. Keep registration type IDs unchanged.
 
-Change both, redeploy the web app, push the site. If they ever disagree the server refuses the order with "rate changed, reload the page", so a mistake cannot under-charge.
+Enter dates as `YYYY-MM-DD` and prices as positive numbers. Changes in these tabs are read by the pages and backend automatically; no website rebuild or Apps Script redeployment is needed for routine pricing edits. If you update `Code.gs`, run `setup()` again to create any missing pricing rows, then deploy a new version of the web app (section 2, step 9). Existing Sheet values are preserved.
+
+The JSON files still provide initial defaults for `setup()` and static page generation, but the live pricing shown and charged comes from the Sheet. If the pricing tabs are missing or invalid, registration is disabled rather than charging using stale page data.
 
 To test other dates without waiting, set Script Property `TEST_TODAY` = `2026-10-15` (server) and open the page locally with `?asof=2026-10-15` (dev server only). Remove `TEST_TODAY` afterwards.
 
-## 5. Editing content / adding another conference
+## 5. Editing conference page content
 
-- Content (about text, topics, schedule, speakers, FAQs, prices) is in `data/conferences/icph2026.json`. Add a speaker photo/profile link by giving that person `"image"` and `"url"` (the card becomes a link).
+The six content tabs are seeded with the current conference-page content when you run `setup()`. Each row is identified by its conference ID and content type/order. Edit the existing rows to change text or reorder items; add rows with the same conference ID and the next item order to add content. Do not change the header row, conference IDs, content types, or speaker/guideline group IDs.
+
+- **Conference Details**: `Page Heading` controls the large conference title in the hero. `Name` and `Short Name` are separate values used in homepage cards and other page labels; change `Page Heading` instead if you only want to change the hero title. Enter `Time Display` as the full text range shown in the hero (for example, `10:00 AM – 01:35 PM (GMT)`). This tab also contains the theme, support email, SEO title/description, and hero/about image paths or URLs.
+- **About & Topics**: paragraphs and scientific session topics. `Content Type` is `about` or `topic`.
+- **Schedule**: agenda rows (`schedule`) and schedule notes (`note`). Enter the `Start` and `End` cells as times and use the `Meridiem` / `End Meridiem` columns for AM/PM. The site reads the displayed time values from the Sheet.
+- **Speakers**: speaker groups (`group`) and their speakers (`speaker`), including display order, name, affiliation, image URL/path, and profile URL.
+- **Guidelines & FAQs**: guideline groups (`guidelineGroup`), guideline items (`guideline`), and FAQs (`faq`). For a list-style FAQ answer, put each item on a separate line and set `Format` to `list`; otherwise use `text`.
+- **Benefits & Policies**: benefit rows (`benefit`) and cancellation-policy rows (`policy`).
+
+The browser reads these tabs when a conference page or homepage loads, so routine content edits do not require a site rebuild or Apps Script redeployment. Apps Script caches each conference's content and refreshes that cache when its Sheet row is edited. If you change `Code.gs` or `ConferenceContentDefaults.gs`, run `setup()` to create any missing tabs/seed rows, run `installTriggers()` again, then deploy a **new web app version** (section 2, step 9). `setup()` preserves existing values and fills a blank `Page Heading` with that conference's current default heading. Event dates and registration prices remain managed in `Summit Settings` and the pricing tabs above.
+
+## 6. Adding another conference
+
+- Content (about text, topics, schedule, speakers, FAQs) is in `data/conferences/icph2026.json`. Registration pricing is managed in the Google Sheet tabs described in section 4. Add a speaker photo/profile link by giving that person `"image"` and `"url"` (the card becomes a link).
 - New conference: copy the JSON to `data/conferences/<slug>.json`, change the content and `id`/`slug`, add the matching block to `CONFERENCES` in `Code.gs`, add its brochure property, run `setup()` again. The page appears at `/conferences/<slug>.html` after the next build.
-- Local preview: `npm run dev` (pages are generated automatically). `npm run generate` regenerates without starting the server.
+- Local preview: `npm.cmd run dev` (pages are generated automatically). `npm.cmd run generate` regenerates without starting the server. Using `npm.cmd` in PowerShell avoids the script-execution-policy block on `npm.ps1`.
