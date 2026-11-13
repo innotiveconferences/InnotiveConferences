@@ -204,7 +204,9 @@ function doPost(e) {
       CONFERENCES,
       p.conferenceId,
     )
-      ? CONFERENCES[p.conferenceId]
+      ? Object.assign({}, CONFERENCES[p.conferenceId], {
+          id: p.conferenceId,
+        })
       : null;
     if (!conf) fail_("Unknown conference.");
 
